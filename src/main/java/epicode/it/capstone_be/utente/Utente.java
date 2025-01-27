@@ -1,6 +1,8 @@
 package epicode.it.capstone_be.utente;
 
 import epicode.it.capstone_be.auth.AppUser;
+import epicode.it.capstone_be.comune.Comune;
+import epicode.it.capstone_be.indirizzo.Indirizzo;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -23,7 +25,15 @@ public class Utente {
     private boolean privacy;
 
     @OneToOne
+    @JoinColumn(name = "indirizzo_id", referencedColumnName = "id")
+    private Indirizzo indirizzo;
+
+    @OneToOne
     @JoinColumn(name ="user_id", nullable = false, unique = true)
     private AppUser appUser;
+
+    @ManyToOne
+    @JoinColumn(name = "luogo_di_nascita_id")
+    private Comune luogo_di_nascita;
 
 }

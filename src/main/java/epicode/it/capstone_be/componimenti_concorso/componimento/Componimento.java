@@ -1,8 +1,7 @@
-package epicode.it.capstone_be.componimento;
+package epicode.it.capstone_be.componimenti_concorso.componimento;
 
 import epicode.it.capstone_be.auth.AppUser;
 import epicode.it.capstone_be.categoria.Categoria;
-import epicode.it.capstone_be.utente.Utente;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +12,7 @@ import java.time.LocalDate;
 @Table(name = "componimenti")
 @Data
 @Inheritance (strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn (name = "tipo_componimento")
 @NoArgsConstructor
 
 public abstract class Componimento {
@@ -29,6 +29,8 @@ public abstract class Componimento {
     @ManyToOne
     @JoinColumn (name = "user_id")
     private AppUser user;
+
+
 
 
 }
