@@ -1,8 +1,8 @@
 package epicode.it.capstone_be.auth;
 
 
-import epicode.it.capstone_be.componimenti_concorso.componimento.Componimento;
-import epicode.it.capstone_be.utente.Utente;
+import epicode.it.capstone_be.entities.componimenti_concorso.componimento.Componimento;
+import epicode.it.capstone_be.entities.utente.Utente;
 import jakarta.persistence.*;
 import lombok.Data;
 

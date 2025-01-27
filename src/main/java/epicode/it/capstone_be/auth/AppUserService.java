@@ -2,10 +2,17 @@ package epicode.it.capstone_be.auth;
 
 import epicode.it.capstone_be.auth.jwt.JwtTokenUtil;
 import epicode.it.capstone_be.auth.requests_responses.RegisterRequest;
-import epicode.it.capstone_be.utente.Utente;
-import epicode.it.capstone_be.utente.UtenteRepository;
+import epicode.it.capstone_be.entities.comune.Comune;
+import epicode.it.capstone_be.entities.comune.ComuneRepo;
+import epicode.it.capstone_be.entities.indirizzo.Indirizzo;
+import epicode.it.capstone_be.entities.provincia.Provincia;
+import epicode.it.capstone_be.entities.provincia.ProvinciaRepo;
+import epicode.it.capstone_be.entities.utente.Utente;
+import epicode.it.capstone_be.entities.utente.UtenteRepository;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -36,6 +43,13 @@ public class AppUserService {
     @Autowired
     private UtenteRepository utenteRepository;
 
+    @Autowired
+    private ProvinciaRepo provinciaRepo;
+
+    @Autowired
+    private ComuneRepo comuneRepo;
+
+    @Transactional
     public AppUser registerUser(Set<Role> roles, RegisterRequest registerRequest) {
         if (appUserRepository.existsByUsername(registerRequest.getUsername())) {
             throw new EntityExistsException("Username già in uso");
@@ -46,12 +60,14 @@ public class AppUserService {
         appUser.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         appUser.setRoles(roles);
 
+
         Utente utente = new Utente();
         utente.setNome(registerRequest.getNome());
         utente.setCognome(registerRequest.getCognome());
         utente.setEmail(registerRequest.getEmail());
-        utente.setAvatar(registerRequest.getAvatar());
         utente.setTelefono(registerRequest.getTelefono());
+        utente.setData_di_nascita(registerRequest.getData_di_nascita());
+        utente.setPrivacy(registerRequest.isPrivacy());
 
         utente.setAppUser(appUser);
 

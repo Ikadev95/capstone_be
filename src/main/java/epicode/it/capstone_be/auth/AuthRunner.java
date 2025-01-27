@@ -7,6 +7,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Set;
 
@@ -29,6 +30,10 @@ public class AuthRunner implements ApplicationRunner {
         request.setUsername("admin");
         request.setPassword("adminpwd");
         request.setEmail("admin@example.com");
+        request.setPrivacy(true);
+        request.setTelefono("123456789");
+        request.setData_di_nascita(LocalDate.of(1995, 4, 11));
+
         if (adminUser.isEmpty()) {
             appUserService.registerUser(
                     Set.of(Role.ROLE_ADMIN),
