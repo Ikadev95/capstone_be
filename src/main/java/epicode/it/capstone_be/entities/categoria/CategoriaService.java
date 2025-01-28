@@ -22,5 +22,10 @@ public class CategoriaService {
     public Categoria createCategoria(CategoriaRequest c) {
         Categoria categoria = new Categoria();
         BeanUtils.copyProperties(c, categoria);
-        return categoriaRepo.save(categoria);}
+        return categoriaRepo.save(categoria);
+    }
+
+    public void deleteCategoria(Long id) {
+        categoriaRepo.deleteById(id);
+    }
 }

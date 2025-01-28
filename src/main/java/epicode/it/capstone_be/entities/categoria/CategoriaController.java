@@ -2,6 +2,7 @@ package epicode.it.capstone_be.entities.categoria;
 
 import epicode.it.capstone_be.entities.utente.UtenteMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,13 @@ public class CategoriaController {
     @PostMapping("/create")
     public ResponseEntity<CategoriaResponse> createCategoria(@Validated @RequestBody CategoriaRequest categoriaRequest){
         Categoria categoria = categoriaService.createCategoria(categoriaRequest);
-        return ResponseEntity.ok(mapper.mapCategoria(categoria));
+        return new ResponseEntity<>(mapper.mapCategoria(categoria), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteCategoria(@Validated @PathVariable Long id){
+        categoriaService.deleteCategoria(id);
+        return new ResponseEntity<>("Categoria eliminata con successo", HttpStatus.OK);
     }
 
 }
