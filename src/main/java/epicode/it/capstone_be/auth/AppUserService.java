@@ -1,6 +1,7 @@
 package epicode.it.capstone_be.auth;
 
 import epicode.it.capstone_be.auth.jwt.JwtTokenUtil;
+import epicode.it.capstone_be.auth.requests_responses.RegisterJudgeRequest;
 import epicode.it.capstone_be.auth.requests_responses.RegisterRequest;
 import epicode.it.capstone_be.entities.comune.Comune;
 import epicode.it.capstone_be.entities.comune.ComuneRepo;
@@ -80,6 +81,36 @@ public class AppUserService {
         utente.setPrivacy(registerRequest.isPrivacy());
         utente.setLuogo_di_nascita(cNascita);
         utente.setIndirizzo(indirizzo);
+
+        utente.setAppUser(appUser);
+
+        appUser = appUserRepository.save(appUser);
+
+        utenteRepository.save(utente);
+
+        return appUser;
+
+    }
+
+    @Transactional
+    public AppUser registerJudge(Set<Role> roles, RegisterJudgeRequest registerRequest) {
+        if (appUserRepository.existsByUsername(registerRequest.getUsername())) {
+            throw new EntityExistsException("Username già in uso");
+        }
+        if (utenteRepository.existsByEmail(registerRequest.getEmail())) {
+            throw new EntityExistsException("Email già in uso");
+        }
+
+        AppUser appUser = new AppUser();
+        appUser.setUsername(registerRequest.getUsername());
+        appUser.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        appUser.setRoles(roles);
+
+
+        Utente utente = new Utente();
+        utente.setNome(registerRequest.getNome());
+        utente.setCognome(registerRequest.getCognome());
+        utente.setEmail(registerRequest.getEmail());
 
         utente.setAppUser(appUser);
 

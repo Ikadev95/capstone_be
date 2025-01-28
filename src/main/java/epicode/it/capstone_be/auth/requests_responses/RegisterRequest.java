@@ -4,6 +4,7 @@ import epicode.it.capstone_be.entities.comune.Comune;
 import epicode.it.capstone_be.entities.comune.ComuneRequest;
 import epicode.it.capstone_be.entities.indirizzo.Indirizzo;
 import epicode.it.capstone_be.entities.indirizzo.IndirizzoRequest;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -20,7 +21,7 @@ public class RegisterRequest {
     private String nome;
     @NotBlank
     private String cognome;
-    @NotBlank
+    @NotBlank @Email
     private String email;
     private String telefono;
     private boolean privacy;

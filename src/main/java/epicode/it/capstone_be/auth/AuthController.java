@@ -2,6 +2,7 @@ package epicode.it.capstone_be.auth;
 
 import epicode.it.capstone_be.auth.requests_responses.AuthResponse;
 import epicode.it.capstone_be.auth.requests_responses.LoginRequest;
+import epicode.it.capstone_be.auth.requests_responses.RegisterJudgeRequest;
 import epicode.it.capstone_be.auth.requests_responses.RegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -35,5 +36,14 @@ public class AuthController {
                 loginRequest.getPassword()
         );
         return ResponseEntity.ok(new AuthResponse(token));
+    }
+
+    @PostMapping("/registerJudge")
+    public ResponseEntity<String> registerJudge(@RequestBody RegisterJudgeRequest registerRequest) {
+        appUserService.registerJudge(
+                Set.of(Role.ROLE_JUDGE),
+                registerRequest
+        );
+        return ResponseEntity.ok("Registrazione avvenuta con successo");
     }
 }

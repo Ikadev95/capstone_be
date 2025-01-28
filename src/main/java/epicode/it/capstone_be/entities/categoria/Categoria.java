@@ -15,6 +15,7 @@ public class Categoria {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
+    @Column(name = "nome_categoria")
     private String nome_categoria;
     private String descrizione;
 
