@@ -14,10 +14,11 @@ import java.util.List;
 public class UtentiController {
 
     private final UtenteService utenteService;
+    private final UtenteMapper mapper;
 
     @GetMapping
-    public ResponseEntity<List<Utente>> getUtenti(){
+    public ResponseEntity<List<UtenteResponse>> getUtenti(){
         List<Utente> utenti = utenteService.findAllUsers();
-        return ResponseEntity.ok(utenti);
+        return ResponseEntity.ok(mapper.mapUtenteResponseList(utenti));
     }
 }
