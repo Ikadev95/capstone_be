@@ -5,6 +5,7 @@ import epicode.it.capstone_be.auth.requests_responses.RegisterRequest;
 import epicode.it.capstone_be.entities.comune.Comune;
 import epicode.it.capstone_be.entities.comune.ComuneRepo;
 import epicode.it.capstone_be.entities.indirizzo.Indirizzo;
+import epicode.it.capstone_be.entities.indirizzo.IndirizzoRepo;
 import epicode.it.capstone_be.entities.provincia.Provincia;
 import epicode.it.capstone_be.entities.provincia.ProvinciaRepo;
 import epicode.it.capstone_be.entities.utente.Utente;
@@ -44,7 +45,7 @@ public class AppUserService {
     private UtenteRepository utenteRepository;
 
     @Autowired
-    private ProvinciaRepo provinciaRepo;
+    private IndirizzoRepo indirizzoRepo;
 
     @Autowired
     private ComuneRepo comuneRepo;
@@ -54,12 +55,21 @@ public class AppUserService {
         if (appUserRepository.existsByUsername(registerRequest.getUsername())) {
             throw new EntityExistsException("Username già in uso");
         }
+        if (utenteRepository.existsByEmail(registerRequest.getEmail())) {
+            throw new EntityExistsException("Email già in uso");
+        }
 
         AppUser appUser = new AppUser();
         appUser.setUsername(registerRequest.getUsername());
         appUser.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         appUser.setRoles(roles);
 
+        Comune cNascita =  comuneRepo.findById(registerRequest.getComune_di_nascita_id()).get();
+
+        Indirizzo indirizzo = new Indirizzo();
+        BeanUtils.copyProperties(registerRequest.getIndirizzo(), indirizzo);
+        indirizzo.setComune(cNascita);
+        indirizzoRepo.save(indirizzo);
 
         Utente utente = new Utente();
         utente.setNome(registerRequest.getNome());
@@ -68,6 +78,8 @@ public class AppUserService {
         utente.setTelefono(registerRequest.getTelefono());
         utente.setData_di_nascita(registerRequest.getData_di_nascita());
         utente.setPrivacy(registerRequest.isPrivacy());
+        utente.setLuogo_di_nascita(cNascita);
+        utente.setIndirizzo(indirizzo);
 
         utente.setAppUser(appUser);
 

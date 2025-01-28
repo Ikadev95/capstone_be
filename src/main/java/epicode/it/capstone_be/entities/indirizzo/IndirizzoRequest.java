@@ -5,8 +5,7 @@ import lombok.Data;
 
 @Data
 public class IndirizzoRequest {
-    private Long id;
     private String via;
     private String civico;
-    private ComuneRequest comune;
+    private Long comune_id;
 }

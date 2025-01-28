@@ -26,7 +26,7 @@ public class RegisterRequest {
     private boolean privacy;
     private LocalDate data_di_nascita;
     private IndirizzoRequest indirizzo;
-    private ComuneRequest luogo_di_nascita;
+    private Long comune_di_nascita_id;
 
 
 }

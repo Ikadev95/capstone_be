@@ -17,7 +17,7 @@ public class Comune {
     private Long id;
 
     private String nome_comune;
-    private int cap;
+    private String cap;
 
     @ManyToOne
     @JoinColumn(name = "provincia_id")
