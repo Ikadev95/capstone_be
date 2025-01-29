@@ -38,14 +38,24 @@ public class FotografiaController {
         return new ResponseEntity<>("Fotografia eliminata con successo", HttpStatus.OK);
     }
 
-    @PostMapping(path = "/upload", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    @PostMapping(path = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadFotografia(
-             @RequestPart FotografiaRequest fotografiaRequest,
-            @RequestPart("file") MultipartFile file
-
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("titolo") String titolo,
+            @RequestParam("id_user") Long id_user,
+            @RequestParam("id_categoria") Long id_categoria
     ) throws IOException {
-            Fotografia fotoSalvata = fotografiaService.salvaFotografia(file, fotografiaRequest);
-            return ResponseEntity.ok("Fotografia salvata con percorso: " + fotoSalvata.getPercorsoFile());
 
+        if (id_user == null || id_categoria == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ID utente o ID categoria non possono essere nulli");
+        }
+
+        FotografiaRequest fotografiaRequest = new FotografiaRequest();
+        fotografiaRequest.setTitolo(titolo);
+        fotografiaRequest.setId_user(id_user);
+        fotografiaRequest.setId_categoria(id_categoria);
+
+        Fotografia fotoSalvata = fotografiaService.salvaFotografia(file, fotografiaRequest);
+        return ResponseEntity.ok("Fotografia salvata con percorso: " + fotoSalvata.getPercorsoFile());
     }
-}
+    }
