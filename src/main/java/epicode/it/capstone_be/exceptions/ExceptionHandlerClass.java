@@ -5,6 +5,7 @@ import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import org.postgresql.util.PSQLException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -44,6 +45,10 @@ public class ExceptionHandlerClass extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = IndexOutOfBoundsException.class)
     protected ResponseEntity<String> indexOut(IndexOutOfBoundsException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(value = PSQLException.class)
+    protected ResponseEntity<String> duplicateKey(PSQLException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 

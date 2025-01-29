@@ -12,5 +12,6 @@ public class Fotografia extends Componimento {
     private Long id;
 
     private String estensioneFile;
+    private String percorsoFile;
 
 }

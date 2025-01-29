@@ -5,7 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -34,9 +36,14 @@ public class FotografiaController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<FotografiaResponse> createFotografia(@Validated @RequestBody FotografiaRequest fotografiaRequest){
-        Fotografia fotografia = fotografiaService.createFotografia(fotografiaRequest);
-        return new ResponseEntity<>(mapper.mapFotografia(fotografia), HttpStatus.CREATED);
+    public ResponseEntity<String> uploadFotografia(@RequestParam("file") MultipartFile file) {
+        try {
+            Fotografia fotoSalvata = fotografiaService.salvaFotografia(file);
+            return ResponseEntity.ok("Fotografia salvata con percorso: " + fotoSalvata.getPercorsoFile());
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Errore nel caricamento del file: " + e.getMessage());
+        }
     }
 
 

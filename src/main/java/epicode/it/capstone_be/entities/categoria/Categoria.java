@@ -1,6 +1,7 @@
 package epicode.it.capstone_be.entities.categoria;
 
 
+import epicode.it.capstone_be.auth.AppUser;
 import epicode.it.capstone_be.entities.componimenti_concorso.componimento.Componimento;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -17,8 +18,11 @@ public class Categoria {
 
     @Column(name = "nome_categoria")
     private String nome_categoria;
-    private String descrizione;
+    private Sezioni sezione;
 
    @OneToMany (mappedBy = "categoria", cascade = CascadeType.ALL)
     private List<Componimento> componimenti;
+
+    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL)
+    private List<AppUser> giudici;
 }

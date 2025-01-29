@@ -1,6 +1,7 @@
 package epicode.it.capstone_be.auth;
 
 
+import epicode.it.capstone_be.entities.categoria.Categoria;
 import epicode.it.capstone_be.entities.componimenti_concorso.componimento.Componimento;
 import epicode.it.capstone_be.entities.utente.Utente;
 import jakarta.persistence.*;
@@ -34,6 +35,10 @@ public class AppUser {
 
     @OneToMany (mappedBy = "user", cascade = CascadeType.ALL)
     private List<Componimento> componimenti;
+
+    @ManyToOne
+    @JoinColumn(name = "categoria_id", referencedColumnName = "id")
+    private Categoria categoria;
 
 
 }

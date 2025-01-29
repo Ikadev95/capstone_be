@@ -12,5 +12,6 @@ public class Poesia extends Componimento {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String testo;
 }

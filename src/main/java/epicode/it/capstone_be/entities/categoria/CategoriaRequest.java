@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class CategoriaRequest {
     private String nome_categoria;
-    private String descrizione;
+    private Sezioni sezione;
 }

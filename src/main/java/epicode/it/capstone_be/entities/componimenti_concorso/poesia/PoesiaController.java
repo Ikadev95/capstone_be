@@ -30,11 +30,8 @@ public class PoesiaController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<PoesiaResponse> createPoesia(@Validated @RequestBody PoesiaResponse poesiaResponse){
-        Poesia poesia = new Poesia();
-        BeanUtils.copyProperties(poesiaResponse, poesia);
-        poesiaService.createPoesia(poesia);
-
+    public ResponseEntity<PoesiaResponse> createPoesia(@Validated @RequestBody PoesiaRequest poesiaRequest){
+        Poesia poesia = poesiaService.createPoesia(poesiaRequest);
         return new ResponseEntity<>(mapper.mapPoesia(poesia), HttpStatus.CREATED);
     }
 

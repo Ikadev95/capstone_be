@@ -15,7 +15,7 @@ public class PoesiaMapper {
         return poesiaResponse;
     }
 
-    public List<PoesiaResponse> mapPoesiaResponseList(List<Poesia> componimenti) {
-        return componimenti.stream().map(this::mapPoesia).toList();
+    public List<PoesiaResponse> mapPoesiaResponseList(List<Poesia> poesie) {
+        return poesie.stream().map(this::mapPoesia).toList();
     }
 }
