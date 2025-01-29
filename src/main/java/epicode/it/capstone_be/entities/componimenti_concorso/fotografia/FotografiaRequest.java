@@ -1,7 +1,4 @@
 package epicode.it.capstone_be.entities.componimenti_concorso.fotografia;
-
-import epicode.it.capstone_be.auth.requests_responses.AppUserRequest;
-import epicode.it.capstone_be.entities.categoria.CategoriaRequest;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -9,8 +6,6 @@ import java.time.LocalDate;
 @Data
 public class FotografiaRequest {
     private String titolo;
-    private LocalDate data_inserimento;
     private Long id_user;
     private Long id_categoria;
-    private String estensioneFile;
 }

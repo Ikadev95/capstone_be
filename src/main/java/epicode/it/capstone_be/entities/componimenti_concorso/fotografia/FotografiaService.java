@@ -1,5 +1,9 @@
 package epicode.it.capstone_be.entities.componimenti_concorso.fotografia;
 
+import epicode.it.capstone_be.auth.AppUser;
+import epicode.it.capstone_be.auth.AppUserRepository;
+import epicode.it.capstone_be.entities.categoria.Categoria;
+import epicode.it.capstone_be.entities.categoria.CategoriaRepo;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -11,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,9 +24,11 @@ import java.util.UUID;
 public class FotografiaService {
     private final FotografiaRepo fotografiaRepo;
     private final String UPLOAD_DIR = "uploads/fotografie/";
+    private final AppUserRepository appUserRepo;
+    private final CategoriaRepo categoriaRepo;
 
 
-    public Fotografia salvaFotografia(MultipartFile file) throws IOException {
+    public Fotografia salvaFotografia(MultipartFile file, FotografiaRequest fotografiaRequest) throws IOException {
         // Crea la cartella se non esiste
         File directory = new File(UPLOAD_DIR);
         if (!directory.exists()) {
@@ -35,10 +42,17 @@ public class FotografiaService {
         // Salva il file nel server
         Files.write(filePath, file.getBytes());
 
+        AppUser user = appUserRepo.findById(fotografiaRequest.getId_user()).get();
+        Categoria c = categoriaRepo.findById(fotografiaRequest.getId_categoria()).get();
+
         // Salva il percorso nel database
         Fotografia fotografia = new Fotografia();
         fotografia.setEstensioneFile(getFileExtension(file.getOriginalFilename()));
         fotografia.setPercorsoFile(filePath.toString());
+        fotografia.setTitolo(fotografiaRequest.getTitolo());
+        fotografia.setData_inserimento(LocalDate.now());
+        fotografia.setUser(user);
+        fotografia.setCategoria(c);
 
         return fotografiaRepo.save(fotografia);
     }
