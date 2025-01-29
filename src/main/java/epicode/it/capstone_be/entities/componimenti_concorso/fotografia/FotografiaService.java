@@ -41,7 +41,12 @@ public class FotografiaService {
 
         // Salva il file nel server
         Files.write(filePath, file.getBytes());
-
+        if(!appUserRepo.existsById(fotografiaRequest.getId_user())) {
+            throw new EntityNotFoundException("Utente non trovato");
+        }
+        if(!categoriaRepo.existsById(fotografiaRequest.getId_categoria())) {
+            throw new EntityNotFoundException("Categoria non trovata");
+        }
         AppUser user = appUserRepo.findById(fotografiaRequest.getId_user()).get();
         Categoria c = categoriaRepo.findById(fotografiaRequest.getId_categoria()).get();
 
@@ -66,10 +71,6 @@ public class FotografiaService {
             throw new EntityNotFoundException("Fotografia non trovata");
     }
         return fotografiaRepo.findById(id).orElse(null);
-    }
-
-    public Fotografia updateFotografia(Fotografia fotografia) {
-        return fotografiaRepo.save(fotografia);
     }
 
     public void deleteFotografia(Long id) {

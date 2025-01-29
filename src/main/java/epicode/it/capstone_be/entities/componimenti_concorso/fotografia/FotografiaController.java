@@ -1,6 +1,8 @@
 package epicode.it.capstone_be.entities.componimenti_concorso.fotografia;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -36,21 +38,14 @@ public class FotografiaController {
         return new ResponseEntity<>("Fotografia eliminata con successo", HttpStatus.OK);
     }
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(path = "/upload", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public ResponseEntity<String> uploadFotografia(
-            @RequestPart("file") MultipartFile file,
-            @RequestPart("fotografia") FotografiaRequest fotografiaRequest
-    ) {
-        try {
+             @RequestPart FotografiaRequest fotografiaRequest,
+            @RequestPart("file") MultipartFile file
+
+    ) throws IOException {
             Fotografia fotoSalvata = fotografiaService.salvaFotografia(file, fotografiaRequest);
             return ResponseEntity.ok("Fotografia salvata con percorso: " + fotoSalvata.getPercorsoFile());
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Errore nel caricamento del file: " + e.getMessage());
-        }
+
     }
-
-
 }
