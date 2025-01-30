@@ -1,10 +1,12 @@
 package epicode.it.capstone_be.entities.voto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
 public class VotoRequest {
-    private double voto;
+    @JsonProperty("voto")
+    private Float voto;
     private Long id_componimento;
-    private Long id_user;
+    private Long id_giudice;
 }

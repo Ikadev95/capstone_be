@@ -14,7 +14,7 @@ public class Voto {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    private Double voto;
+    private Float voto;
 
     @OneToOne
     @JoinColumn(name = "componimento_id")

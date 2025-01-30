@@ -12,6 +12,7 @@ public class VotoMapper {
 
     public VotoResponse mapVoto(Voto voto) {
         VotoResponse votoResponse = modelMapper.map(voto, VotoResponse.class);
+
         return votoResponse;
     }
 

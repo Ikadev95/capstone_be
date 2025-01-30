@@ -6,6 +6,7 @@ import epicode.it.capstone_be.auth.requests_responses.RegisterJudgeRequest;
 import epicode.it.capstone_be.auth.requests_responses.RegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +39,7 @@ public class AuthController {
         return ResponseEntity.ok(new AuthResponse(token));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/registerJudge")
     public ResponseEntity<String> registerJudge(@RequestBody RegisterJudgeRequest registerRequest) {
         appUserService.registerJudge(

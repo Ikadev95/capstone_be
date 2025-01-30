@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/poesie")
 @AllArgsConstructor
+@PreAuthorize("isAuthenticated()")
 public class PoesiaController {
 
     private final PoesiaService poesiaService;
@@ -29,12 +31,14 @@ public class PoesiaController {
         return ResponseEntity.ok(mapper.mapPoesia(poesia));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @PostMapping("/create")
     public ResponseEntity<PoesiaResponse> createPoesia(@Validated @RequestBody PoesiaRequest poesiaRequest){
         Poesia poesia = poesiaService.createPoesia(poesiaRequest);
         return new ResponseEntity<>(mapper.mapPoesia(poesia), HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @DeleteMapping("{id}")
     public ResponseEntity<String> deletePoesia(@Validated @PathVariable Long id){
         poesiaService.deletePoesia(id);
