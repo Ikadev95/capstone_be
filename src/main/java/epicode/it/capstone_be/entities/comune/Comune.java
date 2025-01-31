@@ -26,7 +26,5 @@ public class Comune {
     @OneToMany(mappedBy = "comune")
     private List<Indirizzo> indirizzi;
 
-    @OneToMany(mappedBy = "luogo_di_nascita", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Utente> utenti;
 
 }

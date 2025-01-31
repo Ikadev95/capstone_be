@@ -45,7 +45,7 @@ public class AuthRunner implements ApplicationRunner {
         request.setPrivacy(true);
         request.setTelefono("123456789");
         request.setData_di_nascita(LocalDate.of(1995, 4, 11));
-        request.setComune_di_nascita_id(1L);
+
 
         Comune c = comuneRepo.findById(1L).get();
 
@@ -74,7 +74,8 @@ public class AuthRunner implements ApplicationRunner {
         requestUser.setEmail("user@example.com");
         requestUser.setTelefono("133456589");
         requestUser.setData_di_nascita(LocalDate.of(1990, 12, 1));
-        requestUser.setComune_di_nascita_id(2L);
+        requestUser.setPrivacy(true);
+
 
 
         Comune c1 = comuneRepo.findById(1L).get();
@@ -102,9 +103,9 @@ public class AuthRunner implements ApplicationRunner {
         requestJudge.setUsername("judge");
         requestJudge.setPassword("judgepwd");
         requestJudge.setEmail("judge@example.com");
-        requestJudge.setComune_di_nascita_id(3L);
         requestJudge.setTelefono("123455739");
         requestJudge.setData_di_nascita(LocalDate.of(1970, 4, 21));
+        requestJudge.setPrivacy(true);
 
 
         Comune c2 = comuneRepo.findById(1L).get();

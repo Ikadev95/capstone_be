@@ -22,7 +22,7 @@ public class Utente {
     private LocalDate data_di_nascita;
     private String telefono;
     private String avatar;
-    private boolean privacy;
+    private Boolean privacy;
 
     @OneToOne
     @JoinColumn(name = "indirizzo_id", referencedColumnName = "id")
@@ -32,8 +32,5 @@ public class Utente {
     @JoinColumn(name ="user_id", nullable = false, unique = true)
     private AppUser appUser;
 
-    @ManyToOne
-    @JoinColumn(name = "luogo_di_nascita_id")
-    private Comune luogo_di_nascita;
 
 }

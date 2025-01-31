@@ -14,6 +14,7 @@ import epicode.it.capstone_be.entities.utente.UtenteRepository;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,11 +24,14 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Set;
 
 @Service
+@Validated
 public class AppUserService {
 
     @Autowired
@@ -52,7 +56,7 @@ public class AppUserService {
     private ComuneRepo comuneRepo;
 
     @Transactional
-    public AppUser registerUser(Set<Role> roles, RegisterRequest registerRequest) {
+    public AppUser registerUser(Set<Role> roles,@Valid RegisterRequest registerRequest) {
         if (appUserRepository.existsByUsername(registerRequest.getUsername())) {
             throw new EntityExistsException("Username già in uso");
         }
@@ -65,11 +69,9 @@ public class AppUserService {
         appUser.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         appUser.setRoles(roles);
 
-        Comune cNascita =  comuneRepo.findById(registerRequest.getComune_di_nascita_id()).get();
 
         Indirizzo indirizzo = new Indirizzo();
         BeanUtils.copyProperties(registerRequest.getIndirizzo(), indirizzo);
-        indirizzo.setComune(cNascita);
         indirizzoRepo.save(indirizzo);
 
         Utente utente = new Utente();
@@ -77,9 +79,11 @@ public class AppUserService {
         utente.setCognome(registerRequest.getCognome());
         utente.setEmail(registerRequest.getEmail());
         utente.setTelefono(registerRequest.getTelefono());
+        if(registerRequest.getData_di_nascita().isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("Data di nascita non valida");
+        }
         utente.setData_di_nascita(registerRequest.getData_di_nascita());
-        utente.setPrivacy(registerRequest.isPrivacy());
-        utente.setLuogo_di_nascita(cNascita);
+        utente.setPrivacy(registerRequest.getPrivacy());
         utente.setIndirizzo(indirizzo);
 
         utente.setAppUser(appUser);
