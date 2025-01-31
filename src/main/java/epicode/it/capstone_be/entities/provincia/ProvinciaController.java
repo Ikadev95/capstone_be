@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/province")
+@RequestMapping("api/province")
 public class ProvinciaController {
     private final ProvinciaService provinciaService;
     private final ProvinciaMapper mapper;

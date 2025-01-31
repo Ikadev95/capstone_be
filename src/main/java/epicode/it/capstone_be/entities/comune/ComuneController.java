@@ -14,9 +14,9 @@ public class ComuneController {
     private final ComuneService comuneService;
     private final ComuneMapper mapper;
 
-    @GetMapping("byProvincia/ {id_provincia}")
-    public ResponseEntity<List<ComuneResponse>> getComuneByProvincia(@PathVariable @Validated Long provincia ){
-        List<Comune> comune = comuneService.getComuneByProvincia(provincia);
+    @GetMapping("byProvincia/{id_provincia}")
+    public ResponseEntity<List<ComuneResponse>> getComuneByProvincia(@PathVariable Long id_provincia ){
+        List<Comune> comune = comuneService.getComuneByProvincia(id_provincia);
         return ResponseEntity.ok(mapper.mapComuneResponseList(comune));
     }
 }

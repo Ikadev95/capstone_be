@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class ProvinciaRequest {
+    private Long id;
     private String nome_provincia;
     private String sigla;
     private String regione;

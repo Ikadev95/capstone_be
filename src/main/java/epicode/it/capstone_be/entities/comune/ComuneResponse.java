@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class ComuneResponse {
+    private Long id;
     private String nome_comune;
     private String cap;
     private ProvinciaRequest provincia;
