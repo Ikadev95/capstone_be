@@ -22,6 +22,10 @@ public class CategoriaService {
         return categoriaRepo.findAll();
     }
 
+    public List<Categoria> findAllCategoriesBySezione(Sezioni sezione) {
+        return categoriaRepo.findBySezione(sezione);
+    }
+
     public Categoria getCategoriaById(Long id) {
         return categoriaRepo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Categoria non trovata"));

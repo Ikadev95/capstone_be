@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/categorie")
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('ADMIN')")
+
 public class CategoriaController {
 
     private final CategoriaService categoriaService;
@@ -32,18 +32,26 @@ public class CategoriaController {
         return ResponseEntity.ok(mapper.mapCategoriaResponseList(categorie));
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/sezione/{sezione}")
+    public ResponseEntity<List<CategoriaResponse>> getCategoriaBySezione(@Validated @PathVariable Sezioni sezione){
+        List<Categoria> categorie = categoriaService.findAllCategoriesBySezione(sezione);
+        return ResponseEntity.ok(mapper.mapCategoriaResponseList(categorie));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<CategoriaResponse> createCategoria(@Validated @RequestBody CategoriaRequest categoriaRequest){
         Categoria categoria = categoriaService.createCategoria(categoriaRequest);
         return new ResponseEntity<>(mapper.mapCategoria(categoria), HttpStatus.CREATED);
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteCategoria(@Validated @PathVariable Long id){
         categoriaService.deleteCategoria(id);
         return new ResponseEntity<>("Categoria eliminata con successo", HttpStatus.OK);
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id_categoria}/giudice/{id_giudice}")
     public ResponseEntity<String> rimuoviGiudice(
             @PathVariable Long id_categoria,
@@ -55,7 +63,7 @@ public class CategoriaController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Giudice o Categoria non trovati.");
             }
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/{id_categoria}/giudice/{id_giudice}")
     public ResponseEntity<String> assegnaGiudice(
             @PathVariable Long id_categoria,

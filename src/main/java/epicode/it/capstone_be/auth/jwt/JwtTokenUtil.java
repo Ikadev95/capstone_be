@@ -41,6 +41,10 @@ public class JwtTokenUtil {
 
     // Estrae tutti i claims dal token JWT
     private Claims getAllClaimsFromToken(String token) {
+        if (token == null || token.trim().isEmpty()) {
+            throw new IllegalArgumentException("Il token è nullo o vuoto");
+        }
+
         return Jwts.parser()
                 .setSigningKey(secret)
                 .parseClaimsJws(token)
@@ -64,7 +68,7 @@ public class JwtTokenUtil {
                 .setSubject(userDetails.getUsername())
                 .claim("roles", roles) // Aggiunge i ruoli come claim
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationInMs))
+                .setExpiration(new Date(System.currentTimeMillis() + 3600000))
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
     }
