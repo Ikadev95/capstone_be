@@ -41,13 +41,13 @@ public class FotografiaService {
 
         // Salva il file nel server
         Files.write(filePath, file.getBytes());
-        if(!appUserRepo.existsById(fotografiaRequest.getId_user())) {
+        if(!appUserRepo.existsByUsername(fotografiaRequest.getUsername())) {
             throw new EntityNotFoundException("Utente non trovato");
         }
         if(!categoriaRepo.existsById(fotografiaRequest.getId_categoria())) {
             throw new EntityNotFoundException("Categoria non trovata");
         }
-        AppUser user = appUserRepo.findById(fotografiaRequest.getId_user()).get();
+        AppUser user = appUserRepo.findByUsername(fotografiaRequest.getUsername()).get();
         Categoria c = categoriaRepo.findById(fotografiaRequest.getId_categoria()).get();
 
         // Salva il percorso nel database

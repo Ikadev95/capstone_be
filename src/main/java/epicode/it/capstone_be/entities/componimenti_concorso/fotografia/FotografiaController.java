@@ -46,17 +46,17 @@ public class FotografiaController {
     public ResponseEntity<String> uploadFotografia(
             @RequestParam("file") MultipartFile file,
             @RequestParam("titolo") String titolo,
-            @RequestParam("id_user") Long id_user,
+            @RequestParam("id_user") String username,
             @RequestParam("id_categoria") Long id_categoria
     ) throws IOException {
 
-        if (id_user == null || id_categoria == null) {
+        if (username == null || id_categoria == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ID utente o ID categoria non possono essere nulli");
         }
 
         FotografiaRequest fotografiaRequest = new FotografiaRequest();
         fotografiaRequest.setTitolo(titolo);
-        fotografiaRequest.setId_user(id_user);
+        fotografiaRequest.setUsername(username);
         fotografiaRequest.setId_categoria(id_categoria);
 
         Fotografia fotoSalvata = fotografiaService.salvaFotografia(file, fotografiaRequest);

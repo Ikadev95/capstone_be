@@ -6,6 +6,6 @@ import java.time.LocalDate;
 @Data
 public class FotografiaRequest {
     private String titolo;
-    private Long id_user;
+    private String username;
     private Long id_categoria;
 }
