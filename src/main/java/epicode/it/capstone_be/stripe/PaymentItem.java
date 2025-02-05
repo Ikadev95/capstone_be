@@ -6,4 +6,7 @@ import lombok.Data;
 public class PaymentItem {
     private String name;
     private int amount;
+    private String sezione;
+    private int numeroComponimenti;
+    private String ragione;
 }
