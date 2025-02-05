@@ -28,6 +28,7 @@ public class StripeController {
         Stripe.apiKey = stripeSecretKey;
 
         List<SessionCreateParams.LineItem> items = new ArrayList<>();
+        System.out.println(items);
         for (PaymentItem item : request.getItems()) {
             items.add(
                     SessionCreateParams.LineItem.builder()
