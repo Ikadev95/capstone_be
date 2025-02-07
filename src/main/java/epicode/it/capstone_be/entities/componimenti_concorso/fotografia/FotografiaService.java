@@ -7,6 +7,8 @@ import epicode.it.capstone_be.entities.categoria.CategoriaRepo;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -81,4 +83,8 @@ public class FotografiaService {
     }
 
     public List<Fotografia> getAllFotografie() {return fotografiaRepo.findAll();}
+
+    public List<Fotografia> getFotografieByUser( UserDetails userDetails) {
+        return fotografiaRepo.findByUsername(userDetails.getUsername());
+    }
 }

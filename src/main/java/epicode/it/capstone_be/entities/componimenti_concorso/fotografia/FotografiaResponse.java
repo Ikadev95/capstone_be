@@ -13,4 +13,5 @@ public class FotografiaResponse {
     private AppUserRequest user;
     private CategoriaRequest categoria;
     private String estensioneFile;
+    private String percorsoFile;
 }

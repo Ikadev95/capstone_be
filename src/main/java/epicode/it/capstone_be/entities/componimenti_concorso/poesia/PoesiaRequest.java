@@ -13,7 +13,7 @@ public class PoesiaRequest {
     @NotBlank
     private String titolo;
     @NotNull
-    private Long id_user;
+    private String username;
     @NotNull
     private Long id_categoria;
     @NotBlank

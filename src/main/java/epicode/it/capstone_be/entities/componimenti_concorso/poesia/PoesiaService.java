@@ -33,16 +33,16 @@ public class PoesiaService {
     }
 
     public Poesia createPoesia(PoesiaRequest poesia) {
-        if(!appUserRepo.existsById(poesia.getId_user())) {
+        if (!appUserRepo.existsByUsername(poesia.getUsername())) {
             throw new EntityNotFoundException("Utente non trovato");
         }
-        if(!categoriaRepo.existsById(poesia.getId_categoria())){
+        if (!categoriaRepo.existsById(poesia.getId_categoria())) {
             throw new EntityNotFoundException("Categoria non trovata");
         }
-        AppUser u = appUserRepo.findById(poesia.getId_user()).get();
+        AppUser u = appUserRepo.findByUsername(poesia.getUsername()).get();
         Categoria c = categoriaRepo.findById(poesia.getId_categoria()).get();
 
-        if(c.getSezione() != Sezioni.POESIA) {
+        if (c.getSezione() != Sezioni.POESIA) {
             throw new EntityNotFoundException("Categoria non valida");
         }
         Poesia poesia1 = new Poesia();
@@ -54,15 +54,11 @@ public class PoesiaService {
 
         return poesiaRepo.save(poesia1);
     }
-
-    public Poesia updatePoesia(Poesia poesia) {
-        return poesiaRepo.save(poesia);
-    }
-
-    public void deletePoesia(Long id) {
+    public boolean deletePoesia(Long id) {
         if (!poesiaRepo.existsById(id)) {
             throw new EntityNotFoundException("Poesia non trovata");
         }
         poesiaRepo.deleteById(id);
+        return true;
     }
 }
