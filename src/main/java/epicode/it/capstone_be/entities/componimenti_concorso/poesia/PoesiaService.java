@@ -9,7 +9,9 @@ import epicode.it.capstone_be.entities.categoria.Sezioni;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.apache.commons.beanutils.BeanUtils;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -32,6 +34,7 @@ public class PoesiaService {
         return poesiaRepo.findAll();
     }
 
+    @Transactional
     public Poesia createPoesia(PoesiaRequest poesia) {
         if (!appUserRepo.existsByUsername(poesia.getUsername())) {
             throw new EntityNotFoundException("Utente non trovato");
@@ -60,5 +63,9 @@ public class PoesiaService {
         }
         poesiaRepo.deleteById(id);
         return true;
+    }
+    @Transactional
+    public List<Poesia> getPoesieByUser(UserDetails userDetails) {
+        return poesiaRepo.findByUsername(userDetails.getUsername());
     }
 }

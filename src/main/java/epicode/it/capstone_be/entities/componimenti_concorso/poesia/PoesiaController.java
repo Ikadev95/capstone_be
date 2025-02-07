@@ -5,6 +5,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,5 +45,11 @@ public class PoesiaController {
     public ResponseEntity<String> deletePoesia(@Validated @PathVariable Long id){
         poesiaService.deletePoesia(id);
         return new ResponseEntity<>("Poesia eliminata con successo", HttpStatus.OK);
+    }
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    @GetMapping("/user")
+    public ResponseEntity<List<PoesiaResponse>> getPoesieByUser(@AuthenticationPrincipal UserDetails userDetails){
+        List<Poesia> poesie = poesiaService.getPoesieByUser(userDetails);
+        return ResponseEntity.ok(mapper.mapPoesiaResponseList(poesie));
     }
 }
