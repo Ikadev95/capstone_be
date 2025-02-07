@@ -55,11 +55,16 @@ public class FotografiaService {
         // Salva il percorso nel database
         Fotografia fotografia = new Fotografia();
         fotografia.setEstensioneFile(getFileExtension(file.getOriginalFilename()));
-        fotografia.setPercorsoFile(filePath.toString());
-        fotografia.setTitolo(fotografiaRequest.getTitolo());
-        fotografia.setData_inserimento(LocalDate.now());
-        fotografia.setUser(user);
-        fotografia.setCategoria(c);
+        if(fotografia.getEstensioneFile().equals("jpg") || fotografia.getEstensioneFile().equals("png") || fotografia.getEstensioneFile().equals("jpeg")) {
+            fotografia.setPercorsoFile(filePath.toString());
+            fotografia.setTitolo(fotografiaRequest.getTitolo());
+            fotografia.setData_inserimento(LocalDate.now());
+            fotografia.setUser(user);
+            fotografia.setCategoria(c);
+        }
+        else {
+            throw new EntityNotFoundException("Estensione file non valida");
+        }
 
         return fotografiaRepo.save(fotografia);
     }

@@ -19,12 +19,13 @@ public class Pagamento {
     private String metodo_pagamento;
     private int importo;
 
+    @Enumerated(EnumType.STRING)
     private RagionePagamentoEnum ragione_pagamento;
     private int numero_poesie_pagate;
     private int numero_foto_pagate;
 
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private AppUser user;
 

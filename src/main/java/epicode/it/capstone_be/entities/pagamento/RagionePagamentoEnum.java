@@ -1,5 +1,5 @@
 package epicode.it.capstone_be.entities.pagamento;
 
 public enum RagionePagamentoEnum {
-    CORSO,CONCORSO,EVENTO
+    CORSO,CONCORSO_POESIA,CONCORSO_FOTOGRAFIA,EVENTO
 }

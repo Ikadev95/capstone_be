@@ -12,4 +12,5 @@ import java.util.List;
 public interface FotografiaRepo extends JpaRepository<Fotografia, Long> {
     @Query("SELECT f FROM Fotografia f WHERE f.user.username = :username")
     List<Fotografia> findByUsername(@Param("username") String username);
+
 }
