@@ -11,6 +11,8 @@ public class PagamentoMapper {
 
     public PagamentoResponse mapPagamento(Pagamento pagamento) {
         PagamentoResponse pagamentoResponse = modelMapper.map(pagamento, PagamentoResponse.class);
+        pagamentoResponse.setId_user(pagamento.getUser().getId());
+        pagamentoResponse.setStato_pagamento(pagamento.getStato_pagamento().toString());
         return pagamentoResponse;
     }
 

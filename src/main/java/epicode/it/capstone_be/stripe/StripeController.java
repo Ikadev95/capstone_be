@@ -9,6 +9,7 @@ import epicode.it.capstone_be.auth.AppUserRepository;
 import epicode.it.capstone_be.entities.pagamento.Pagamento;
 import epicode.it.capstone_be.entities.pagamento.PagamentoRepo;
 import epicode.it.capstone_be.entities.pagamento.RagionePagamentoEnum;
+import epicode.it.capstone_be.entities.pagamento.StatoPagamentoEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -78,6 +79,7 @@ public class StripeController {
             p.setData_pagamento(LocalDate.now());
             p.setRagione_pagamento(RagionePagamentoEnum.valueOf(item.getRagione()));
             p.setMetodo_pagamento("carta");
+            p.setStato_pagamento(StatoPagamentoEnum.PAGATO);
 
             if ("poesia".equalsIgnoreCase(item.getSezione())) {
                 p.setNumero_poesie_pagate(item.getNumeroComponimenti());

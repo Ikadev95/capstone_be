@@ -24,6 +24,9 @@ public class Pagamento {
     private int numero_poesie_pagate;
     private int numero_foto_pagate;
 
+    @Enumerated(EnumType.STRING)
+    private StatoPagamentoEnum stato_pagamento;
+
 
     @ManyToOne
     @JoinColumn(name = "user_id")
