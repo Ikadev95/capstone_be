@@ -11,10 +11,15 @@ public class UtenteMapper {
 
     public UtenteResponse mapUtente(Utente utente) {
         UtenteResponse utenteResponse = modelMapper.map(utente, UtenteResponse.class);
-        utenteResponse.getIndirizzo().setComune_id(utente.getIndirizzo().getComune().getId());
+
+        if (utente.getIndirizzo() != null && utente.getIndirizzo().getComune() != null) {
+            utenteResponse.getIndirizzo().setComune_id(utente.getIndirizzo().getComune().getId());
+        } else {
+            System.out.println("Attenzione: l'indirizzo o il comune è nullo per l'utente: " + utente.getId());
+        }
+
         return utenteResponse;
     }
-
 
 
    public List<UtenteResponse> mapUtenteResponseList(List<Utente> utenti) {
