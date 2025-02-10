@@ -6,6 +6,7 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 public class UtenteAnnoResponse {
+    private Long id;
     private String username;
     private String nome;
     private String cognome;
