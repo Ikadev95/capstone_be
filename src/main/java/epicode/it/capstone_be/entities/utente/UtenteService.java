@@ -1,5 +1,7 @@
 package epicode.it.capstone_be.entities.utente;
 
+import epicode.it.capstone_be.auth.Role;
+import epicode.it.capstone_be.auth.requests_responses.RegisterJudgeRequest;
 import epicode.it.capstone_be.auth.requests_responses.RegisterRequest;
 import epicode.it.capstone_be.entities.pagamento.PagamentoRepo;
 import jakarta.persistence.EntityNotFoundException;
@@ -35,6 +37,11 @@ public class UtenteService {
     public Page<UtenteAnnoResponse> findUsersByPagamentoAnno(int anno, Pageable pageable) {
         return pagamentoRepo.findUsersByPagamentoAnno(anno, pageable);
     }
+
+    public Page<RegisterJudgeResponse> getAllPagedByJudge(Pageable pageable) {
+        return utenteRepository.findUsersByRole(Role.ROLE_JUDGE, pageable);
+    }
+
 
     //restituisco utente per id
     public Utente getUtenteById(Long id){

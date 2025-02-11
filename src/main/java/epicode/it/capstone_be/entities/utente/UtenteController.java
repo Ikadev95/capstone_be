@@ -33,6 +33,13 @@ public class UtenteController {
         return ResponseEntity.ok(utenteService.findUsersByPagamentoAnno(LocalDate.now().getYear(), pageable));
     }
 
+    @GetMapping("/paged/judge")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity<Page<RegisterJudgeResponse>> getAllPagedByJudge(@ParameterObject Pageable pageable) {
+        return ResponseEntity.ok(utenteService.getAllPagedByJudge(pageable));
+    }
+
+
     @GetMapping("{id}")
     public ResponseEntity<UtenteResponse> getUtente(@Validated @PathVariable Long id){
         Utente utente = utenteService.getUtenteById(id);
