@@ -45,11 +45,13 @@ public class AuthController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/registerJudge")
-    public ResponseEntity<String> registerJudge(@RequestBody RegisterJudgeRequest registerRequest) {
+    public ResponseEntity<Map<String, String>> registerJudge(@RequestBody RegisterJudgeRequest registerRequest) {
         appUserService.registerJudge(
                 Set.of(Role.ROLE_JUDGE),
                 registerRequest
         );
-        return ResponseEntity.ok("Registrazione avvenuta con successo");
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Registrazione avvenuta con successo");
+        return ResponseEntity.ok(response);
     }
 }

@@ -15,7 +15,8 @@ public class ComuneRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        String filePath = getClass().getClassLoader().getResource("comuni.csv").getPath();
-        comuneImportCSV.importCsvComune(filePath);
+
+            String filePath = getClass().getClassLoader().getResource("comuni.csv").getPath();
+            comuneImportCSV.importCsvComune(filePath);
     }
 }

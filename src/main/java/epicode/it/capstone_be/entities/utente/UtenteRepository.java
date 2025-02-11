@@ -14,7 +14,7 @@ public interface UtenteRepository extends JpaRepository<Utente, Long> {
     boolean existsByEmail(String email);
     Utente findByEmail(String email);
     @Query("SELECT new epicode.it.capstone_be.entities.utente.RegisterJudgeResponse(" +
-            "u.id, u.username, ut.nome, ut.cognome, ut.email) " +
+            "u.id, u.username, ut.nome, ut.cognome, ut.email, u.categoria.nome_categoria) " +
             "FROM AppUser u " +
             "JOIN u.utente ut " +
             "WHERE :role MEMBER OF u.roles")
