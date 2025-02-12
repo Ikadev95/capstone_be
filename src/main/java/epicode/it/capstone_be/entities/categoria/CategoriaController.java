@@ -8,7 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/categorie")
@@ -65,15 +68,19 @@ public class CategoriaController {
     }
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/{id_categoria}/giudice/{id_giudice}")
-    public ResponseEntity<String> assegnaGiudice(
+    public ResponseEntity<Map<String, String>> assegnaGiudice(
             @PathVariable Long id_categoria,
             @PathVariable Long id_giudice) {
-            boolean assigned = categoriaService.assegnaGiudice(id_categoria, id_giudice);
-            if (assigned) {
-                return ResponseEntity.ok("Giudice assegnato con successo.");
-            } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Errore nell'assegnazione del giudice.");
-            }
+        boolean assigned = categoriaService.assegnaGiudice(id_categoria, id_giudice);
+        Map<String, String> response = new HashMap<>();
+
+        if (assigned) {
+            response.put("message", "Giudice assegnato con successo.");
+            return ResponseEntity.ok(response);
+        } else {
+            response.put("error", "Errore nell'assegnazione del giudice.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
     }
 
 }

@@ -17,6 +17,7 @@ public interface UtenteRepository extends JpaRepository<Utente, Long> {
             "u.id, u.username, ut.nome, ut.cognome, ut.email, u.categoria.nome_categoria) " +
             "FROM AppUser u " +
             "JOIN u.utente ut " +
+            "LEFT JOIN u.categoria c " +
             "WHERE :role MEMBER OF u.roles")
     Page<RegisterJudgeResponse> findUsersByRole(@Param("role") Role role, Pageable pageable);
 
