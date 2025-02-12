@@ -151,4 +151,11 @@ public class AppUserService {
 
         return appUser;
     }
+
+    public AppUser deleteUser(Long id) {
+        AppUser appUser = appUserRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Utente non trovato con id: " + id));
+        appUserRepository.delete(appUser);
+        return appUser;
+    }
 }

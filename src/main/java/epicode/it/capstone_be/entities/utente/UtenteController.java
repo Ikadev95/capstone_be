@@ -1,16 +1,20 @@
 package epicode.it.capstone_be.entities.utente;
 
+import epicode.it.capstone_be.auth.AppUserService;
 import lombok.AllArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -20,6 +24,7 @@ public class UtenteController {
 
     private final UtenteService utenteService;
     private final UtenteMapper mapper;
+    private final AppUserService appUserService;
 
     @GetMapping
     public ResponseEntity<List<UtenteResponse>> getUtenti(){
@@ -55,6 +60,14 @@ public class UtenteController {
     public ResponseEntity<UtenteResponse> getUtenteByEmail(@Validated @PathVariable String email){
         Utente utente = utenteService.getUtenteByEmail(email);
         return ResponseEntity.ok(mapper.mapUtente(utente));
+    }
+
+    @DeleteMapping("{id}/delete")
+    public ResponseEntity<Map <String,String>> deleteUtente(@Validated @PathVariable Long id){
+        appUserService.deleteUser(id);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Utente eliminato con successo");
+        return ResponseEntity.ok(response);
     }
 
 
