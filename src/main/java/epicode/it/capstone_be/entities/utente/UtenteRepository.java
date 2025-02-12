@@ -21,4 +21,12 @@ public interface UtenteRepository extends JpaRepository<Utente, Long> {
             "WHERE :role MEMBER OF u.roles")
     Page<RegisterJudgeResponse> findUsersByRole(@Param("role") Role role, Pageable pageable);
 
+    @Query("SELECT new epicode.it.capstone_be.entities.utente.UtenteAnnoResponse(" +
+            "u.id, u.username, ut.nome, ut.cognome, ut.email) " +
+            "FROM AppUser u " +
+            "JOIN u.utente ut " +
+           " WHERE 'ROLE_USER' MEMBER OF u.roles")
+    Page<UtenteAnnoResponse> findAllUsersPaged(Pageable pageable);
+
+
 }

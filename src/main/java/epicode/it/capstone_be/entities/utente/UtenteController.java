@@ -27,6 +27,11 @@ public class UtenteController {
         return ResponseEntity.ok(mapper.mapUtenteResponseList(utenti));
     }
 
+    @GetMapping("/paged")
+    public ResponseEntity<Page<UtenteAnnoResponse>> getAllPaged(@ParameterObject Pageable pageable) {
+        return ResponseEntity.ok(utenteService.getAllPaged(pageable));
+    }
+
     @GetMapping("/paged/year")
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Page<UtenteAnnoResponse>> getAllPagedByYear(@ParameterObject Pageable pageable) {

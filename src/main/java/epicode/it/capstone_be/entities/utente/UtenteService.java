@@ -25,13 +25,8 @@ public class UtenteService {
     //restituisco tutti gli utenti
     public List<Utente> findAllUsers(){ return utenteRepository.findAll();}
 
-    public Page<UtenteResponse> getAllPageable(Pageable pageable) {
-        Page<Utente> pagedInvoices = utenteRepository.findAll(pageable);
-        Page<UtenteResponse> response = pagedInvoices.map(e -> {
-            UtenteResponse invoiceResponse = mapper.mapUtente(e);
-            return invoiceResponse;
-        });
-        return response;
+    public Page<UtenteAnnoResponse> getAllPaged(Pageable pageable) {
+        return utenteRepository.findAllUsersPaged(pageable);
     }
 
     public Page<UtenteAnnoResponse> findUsersByPagamentoAnno(int anno, Pageable pageable) {
