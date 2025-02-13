@@ -29,4 +29,7 @@ public interface UtenteRepository extends JpaRepository<Utente, Long> {
     Page<UtenteAnnoResponse> findAllUsersPaged(Pageable pageable);
 
 
+    @Query("SELECT u FROM Utente u JOIN u.appUser au WHERE au.username = :username")
+    Utente findByUsername(@Param("username") String username);
 }
+

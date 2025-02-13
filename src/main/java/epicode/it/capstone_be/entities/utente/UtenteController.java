@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +21,7 @@ import java.util.Map;
 @RestController
 @AllArgsConstructor
 @RequestMapping("api/utenti")
-@PreAuthorize("hasRole('ADMIN')")
+@PreAuthorize("isAuthenticated()")
 public class UtenteController {
 
     private final UtenteService utenteService;
@@ -53,6 +55,12 @@ public class UtenteController {
     @GetMapping("{id}")
     public ResponseEntity<UtenteResponse> getUtente(@Validated @PathVariable Long id){
         Utente utente = utenteService.getUtenteById(id);
+        return ResponseEntity.ok(mapper.mapUtente(utente));
+    }
+
+    @GetMapping("me")
+    public ResponseEntity<UtenteResponse> getUtente(@AuthenticationPrincipal User userDetails){
+        Utente utente = utenteService.getUtenteByUsername(userDetails);
         return ResponseEntity.ok(mapper.mapUtente(utente));
     }
 

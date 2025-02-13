@@ -8,6 +8,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -27,6 +28,10 @@ public class UtenteService {
 
     public Page<UtenteAnnoResponse> getAllPaged(Pageable pageable) {
         return utenteRepository.findAllUsersPaged(pageable);
+    }
+
+    public Utente getUtenteByUsername(User userDetails){
+        return utenteRepository.findByUsername(userDetails.getUsername());
     }
 
     public Page<UtenteAnnoResponse> findUsersByPagamentoAnno(int anno, Pageable pageable) {
