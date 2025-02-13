@@ -18,21 +18,26 @@ public class VotoService {
     private final AppUserRepository appUserRepo;
     private final ComponimentoRepo componimentoRepo;
 
-    public Voto saveVoto(VotoRequest voto) {
-        if(!componimentoRepo.existsById(voto.getId_componimento())) {
+    public Voto saveVoto(VotoRequest voto, User userDetails) {
+        if (!componimentoRepo.existsById(voto.getId_componimento())) {
             throw new EntityNotFoundException("Componimento non trovato");
         }
-        if(!appUserRepo.existsById(voto.getId_giudice())) {
-            throw new EntityNotFoundException("Utente non trovato");
-        }
-        Componimento c = componimentoRepo.findById(voto.getId_componimento()).get();
-        AppUser u = appUserRepo.findById(voto.getId_componimento()).get();
+
+        AppUser user = appUserRepo.findByUsername(userDetails.getUsername())
+                .orElseThrow(() -> new EntityNotFoundException("Utente non trovato"));
+
+        Componimento c = componimentoRepo.findById(voto.getId_componimento())
+                .orElseThrow(() -> new EntityNotFoundException("Componimento non trovato"));
+
+        // Questo probabilmente è un errore! Dovresti ottenere l'utente giusto, non usare l'ID del componimento
+        AppUser u = appUserRepo.findById(user.getId()) // Usare user.getId() invece di voto.getId_componimento()
+                .orElseThrow(() -> new EntityNotFoundException("Utente non trovato"));
 
         Voto v = new Voto();
         v.setComponimento(c);
         v.setUser(u);
-        System.out.println(voto.getVoto());
-        v.setVoto( voto.getVoto());
+        v.setVoto(voto.getVoto());
+
         return votoRepo.save(v);
     }
 

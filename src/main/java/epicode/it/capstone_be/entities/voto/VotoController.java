@@ -18,9 +18,9 @@ public class VotoController {
     private final VotoMapper mapper;
 
     @PostMapping("/create")
-    public ResponseEntity<VotoResponse> createVoto(@RequestBody VotoRequest voto){
+    public ResponseEntity<VotoResponse> createVoto(@RequestBody VotoRequest voto,@AuthenticationPrincipal User userDetails ){
         System.out.println(voto);
-        Voto v = votoService.saveVoto(voto);
+        Voto v = votoService.saveVoto(voto, userDetails);
         return new ResponseEntity<>(mapper.mapVoto(v), HttpStatus.CREATED);
     }
 

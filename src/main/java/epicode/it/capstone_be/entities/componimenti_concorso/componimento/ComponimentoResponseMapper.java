@@ -18,9 +18,7 @@ public class ComponimentoResponseMapper {
         this.modelMapper.createTypeMap(Componimento.class, ComponimentoFullResponse.class)
                 .addMapping(Componimento::getId, ComponimentoFullResponse::setId)
                 .addMapping(Componimento::getTitolo, ComponimentoFullResponse::setTitolo)
-                .addMapping(Componimento::getData_inserimento, ComponimentoFullResponse::setDataInserimento)
-                .addMapping(src -> src.getCategoria().getId(), ComponimentoFullResponse::setCategoriaId)
-                .addMapping(src -> src.getUser().getId(), ComponimentoFullResponse::setUserId);
+                .addMapping(src -> src.getCategoria().getId(), ComponimentoFullResponse::setCategoriaId);
 
         // Mappatura specifica per Fotografia
         this.modelMapper.createTypeMap(Fotografia.class, ComponimentoFullResponse.class)
