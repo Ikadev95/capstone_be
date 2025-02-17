@@ -26,7 +26,7 @@ public interface PagamentoRepo extends JpaRepository<Pagamento,Long> {
                                                               @Param("startDate") LocalDate startDate,
                                                               @Param("endDate") LocalDate endDate);
 
-    @Query("SELECT new epicode.it.capstone_be.entities.utente.UtenteAnnoResponse(" +
+    @Query("SELECT DISTINCT new epicode.it.capstone_be.entities.utente.UtenteAnnoResponse(" +
             "u.id, u.username, ut.nome, ut.cognome, ut.email) " +
             "FROM Pagamento p " +
             "JOIN p.user u " +

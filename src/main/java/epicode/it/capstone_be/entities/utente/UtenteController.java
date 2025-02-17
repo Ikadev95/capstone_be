@@ -86,14 +86,14 @@ public class UtenteController {
     }
 
     @PostMapping(path = "/upload/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Map <String, String>> uploadAvatar(
-            @RequestParam("file")MultipartFile file,
+    public ResponseEntity<Map<String, String>> uploadAvatar(
+            @RequestParam(value = "file", required = false) MultipartFile file,  // Rende il file opzionale
             @RequestParam("nome") String nome,
             @RequestParam("cognome") String cognome,
             @RequestParam("email") String email,
             @RequestParam("numero_telefono") String numero_telefono,
             @AuthenticationPrincipal UserDetails userDetails
-            ) throws IOException{
+    ) throws IOException {
 
         // Definisci la dimensione massima consentita in byte
         long MAX_FILE_SIZE = 5 * 1024 * 1024;
@@ -102,47 +102,50 @@ public class UtenteController {
         int MAX_WIDTH = 4000;
         int MAX_HEIGHT = 3000;
 
-        // Verifica la dimensione del file
-        if (file.getSize() > MAX_FILE_SIZE) {
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "Il file è troppo grande. La dimensione massima consentita è di 5 MB.");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-        }
+        // Se il file è presente, verifica la dimensione e la risoluzione
+        if (file != null) {
+            // Verifica la dimensione del file
+            if (file.getSize() > MAX_FILE_SIZE) {
+                Map<String, String> response = new HashMap<>();
+                response.put("message", "Il file è troppo grande. La dimensione massima consentita è di 5 MB.");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            }
 
-        // Controlla la risoluzione dell'immagine
-        try (InputStream is = file.getInputStream()) {
-            BufferedImage image = ImageIO.read(is);
-            if (image != null) {
-                int width = image.getWidth();
-                int height = image.getHeight();
-                if (width > MAX_WIDTH || height > MAX_HEIGHT) {
+            // Controlla la risoluzione dell'immagine
+            try (InputStream is = file.getInputStream()) {
+                BufferedImage image = ImageIO.read(is);
+                if (image != null) {
+                    int width = image.getWidth();
+                    int height = image.getHeight();
+                    if (width > MAX_WIDTH || height > MAX_HEIGHT) {
+                        Map<String, String> response = new HashMap<>();
+                        response.put("message", "La risoluzione dell'immagine è troppo alta. La dimensione massima consentita è "
+                                + MAX_WIDTH + "x" + MAX_HEIGHT + "px.");
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+                    }
+                } else {
                     Map<String, String> response = new HashMap<>();
-                    response.put("message", "La risoluzione dell'immagine è troppo alta. La dimensione massima consentita è "
-                            + MAX_WIDTH + "x" + MAX_HEIGHT + "px.");
+                    response.put("message", "Il file non è un'immagine valida.");
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
                 }
-            } else {
-                Map<String, String> response = new HashMap<>();
-                response.put("message", "Il file non è un'immagine valida.");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
             }
         }
 
-        UtenteRequest utenteRequest = new UtenteRequest(nome,cognome,email,numero_telefono);
+        // Crea l'oggetto UtenteRequest senza file se non presente
+        UtenteRequest utenteRequest = new UtenteRequest(nome, cognome, email, numero_telefono);
 
-        Boolean resp = utenteService.updateUser(userDetails,utenteRequest,file);
+        // Se il file è presente, passa anche il file alla logica di aggiornamento
+        Boolean resp = utenteService.updateUser(userDetails, utenteRequest, file);
 
-        if(resp){
+        if (resp) {
             Map<String, String> response = new HashMap<>();
             response.put("message", "Avatar e utente salvati con successo");
             return ResponseEntity.ok(response);
-        }
-        else {
+        } else {
             Map<String, String> response = new HashMap<>();
             response.put("message", "Aggiornamento fallito");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
-
     }
 
 
