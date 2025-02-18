@@ -12,11 +12,13 @@ import org.springframework.stereotype.Component;
 public class ComuneRunner implements ApplicationRunner {
 
     private final ComuneImportCSV comuneImportCSV;
+    private  final ComuneRepo comuneRepo;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-
+        if(comuneRepo.count() == 0) {
             String filePath = getClass().getClassLoader().getResource("comuni.csv").getPath();
             comuneImportCSV.importCsvComune(filePath);
+        }
     }
 }
