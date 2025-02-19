@@ -30,10 +30,16 @@ public class VotoController {
         return new ResponseEntity<>("Voto eliminato con successo", HttpStatus.OK);
     }
 
-    @PatchMapping("{id}")
-    public ResponseEntity<VotoResponse> updateVoto(@Validated @PathVariable Long id, @RequestBody Float voto, @AuthenticationPrincipal User userDetails){
-        Voto v = votoService.modifyVoto( voto, id, userDetails.getUsername());
+    @PatchMapping("update")
+    public ResponseEntity<VotoResponse> updateVoto( @RequestBody VotoRequest voto, @AuthenticationPrincipal User userDetails){
+        Voto v = votoService.modifyVoto( voto.getVoto(), voto.getId_componimento(), userDetails.getUsername());
         return new ResponseEntity<>(mapper.mapVoto(v), HttpStatus.OK);
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<VotoResponse> getVoto(@Validated @PathVariable Long id, @AuthenticationPrincipal User userDetails){
+        Voto voto = votoService.getVoto(id, userDetails.getUsername());
+        return ResponseEntity.ok(mapper.mapVoto(voto));
     }
 
 }

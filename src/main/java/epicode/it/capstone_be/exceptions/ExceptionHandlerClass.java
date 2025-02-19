@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.time.DateTimeException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 @ControllerAdvice
 public class ExceptionHandlerClass extends ResponseEntityExceptionHandler {
@@ -59,6 +60,11 @@ public class ExceptionHandlerClass extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = NullPointerException.class)
     protected ResponseEntity<String> nullPointer(NullPointerException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = NoSuchElementException.class)
+    protected ResponseEntity<String> noSuchElement(NoSuchElementException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 

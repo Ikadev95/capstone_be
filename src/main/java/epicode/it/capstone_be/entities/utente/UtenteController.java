@@ -87,7 +87,7 @@ public class UtenteController {
 
     @PostMapping(path = "/upload/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Map<String, String>> uploadAvatar(
-            @RequestParam(value = "file", required = false) MultipartFile file,  // Rende il file opzionale
+            @RequestParam(value = "file", required = false) MultipartFile file,
             @RequestParam("nome") String nome,
             @RequestParam("cognome") String cognome,
             @RequestParam("email") String email,

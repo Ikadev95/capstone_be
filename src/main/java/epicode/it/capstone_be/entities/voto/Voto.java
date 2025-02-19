@@ -1,5 +1,6 @@
 package epicode.it.capstone_be.entities.voto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import epicode.it.capstone_be.auth.AppUser;
 
 import epicode.it.capstone_be.entities.componimenti_concorso.componimento.Componimento;
@@ -16,13 +17,15 @@ public class Voto {
 
     private Float voto;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "componimento_id")
     private Componimento componimento;
 
+    @ManyToOne
     @JoinColumn(name = "user_id")
-    @OneToOne
+    @JsonIgnore
     private AppUser user;
+
 
 
 }

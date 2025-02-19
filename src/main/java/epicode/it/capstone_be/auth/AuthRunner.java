@@ -5,6 +5,7 @@ import epicode.it.capstone_be.entities.comune.Comune;
 import epicode.it.capstone_be.entities.comune.ComuneRepo;
 import epicode.it.capstone_be.entities.indirizzo.IndirizzoRepo;
 import epicode.it.capstone_be.entities.indirizzo.IndirizzoRequest;
+import com.github.javafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -32,99 +33,99 @@ public class AuthRunner implements ApplicationRunner {
     @Autowired
     private ComuneRepo comuneRepo;
 
+    @Autowired
+    private AppUserRepository appUserRepository;
+
+    private Faker faker = new Faker();
+
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        // Creazione dell'utente admin se non esiste
-        Optional<AppUser> adminUser = appUserService.findByUsername("admin");
-        RegisterRequest request = new RegisterRequest();
-        request.setCognome("Admin");
-        request.setNome("Admin");
-        request.setUsername("admin");
-        request.setPassword("adminpwd");
-        request.setEmail("admin@example.com");
-        request.setPrivacy(true);
-        request.setTelefono("123456789");
-        request.setData_di_nascita(LocalDate.of(1995, 4, 11));
 
+        if (appUserRepository.count() == 0) {
 
-        Comune c = comuneRepo.findById(1L).get();
+            // Creazione dell'utente admin
+            Optional<AppUser> adminUser = appUserService.findByUsername("admin");
+            if (adminUser.isEmpty()) {
+                RegisterRequest adminRequest = new RegisterRequest();
+                adminRequest.setCognome("Guglielmo");
+                adminRequest.setNome("Federica");
+                adminRequest.setUsername("admin");
+                adminRequest.setPassword("adminpwd");
+                adminRequest.setEmail(faker.internet().emailAddress());
+                adminRequest.setTelefono(faker.phoneNumber().phoneNumber());
+                adminRequest.setData_di_nascita(LocalDate.of(1995, 4, 11));
+                adminRequest.setPrivacy(true);
 
-        IndirizzoRequest indirizzo = new IndirizzoRequest();
-        indirizzo.setVia("Via trento");
-        indirizzo.setCivico("12");
-        indirizzo.setComune_id(1L);
+                Comune comune = comuneRepo.findById(1L).get();
+                IndirizzoRequest indirizzo = new IndirizzoRequest();
+                indirizzo.setVia(faker.address().streetName());
+                indirizzo.setCivico(faker.address().buildingNumber());
+                indirizzo.setComune_id(1L);
 
-        request.setIndirizzo(indirizzo);
+                adminRequest.setIndirizzo(indirizzo);
+                appUserService.registerUser(Set.of(Role.ROLE_ADMIN), adminRequest);
+            }
 
-        if (adminUser.isEmpty()) {
-            appUserService.registerUser(
-                    Set.of(Role.ROLE_ADMIN),
-                    request
+            // Creazione dei 6 giudici
+            String[] categorie = {
+                    "poesia in ITALIANO a tema fisso",
+                    "poesia in ITALIANO a tema libero",
+                    "poesia in PIEMONTESE a tema fisso",
+                    "poesia in PIEMONTESE a tema libero",
+                    "fotografia a tema fisso",
+                    "fotografia a tema libero"
+            };
 
-            );
-        }
+            for (int i = 0; i < categorie.length; i++) {
+                String giudiceUsername = "judge" + (i + 1);
+                Optional<AppUser> judgeUser = appUserService.findByUsername(giudiceUsername);
+                if (judgeUser.isEmpty()) {
+                    RegisterRequest judgeRequest = new RegisterRequest();
+                    judgeRequest.setCognome(faker.name().lastName());
+                    judgeRequest.setNome(faker.name().firstName());
+                    judgeRequest.setUsername(giudiceUsername);
+                    judgeRequest.setPassword("judge" + (i + 1) + "pwd");
+                    judgeRequest.setEmail(faker.internet().emailAddress());
+                    judgeRequest.setTelefono(faker.phoneNumber().phoneNumber());
+                    judgeRequest.setData_di_nascita(LocalDate.of(1980 + i, 1, 1));
+                    judgeRequest.setPrivacy(true);
 
-        // Creazione dell'utente user se non esiste
-        Optional<AppUser> normalUser = appUserService.findByUsername("user");
-        RegisterRequest requestUser = new RegisterRequest();
-        requestUser.setCognome("User");
-        requestUser.setNome("User");
-        requestUser.setUsername("user");
-        requestUser.setPassword("userpwd");
-        requestUser.setEmail("user@example.com");
-        requestUser.setTelefono("133456589");
-        requestUser.setData_di_nascita(LocalDate.of(1990, 12, 1));
-        requestUser.setPrivacy(true);
+                    Comune comune = comuneRepo.findById(1L).get();
+                    IndirizzoRequest indirizzo = new IndirizzoRequest();
+                    indirizzo.setVia(faker.address().streetName());
+                    indirizzo.setCivico(faker.address().buildingNumber());
+                    indirizzo.setComune_id(1L);
 
+                    judgeRequest.setIndirizzo(indirizzo);
+                    appUserService.registerUser(Set.of(Role.ROLE_JUDGE), judgeRequest);
+                }
+            }
 
+            // Creazione degli utenti standard
+            for (int i = 0; i < 9; i++) {
+                String userUsername = "user" + (i + 1);
+                Optional<AppUser> normalUser = appUserService.findByUsername(userUsername);
+                if (normalUser.isEmpty()) {
+                    RegisterRequest userRequest = new RegisterRequest();
+                    userRequest.setCognome(faker.name().lastName());
+                    userRequest.setNome(faker.name().firstName());
+                    userRequest.setUsername(userUsername);
+                    userRequest.setPassword("user" + (i + 1) + "pwd");
+                    userRequest.setEmail(faker.internet().emailAddress());
+                    userRequest.setTelefono(faker.phoneNumber().phoneNumber());
+                    userRequest.setData_di_nascita(LocalDate.of(1990 + i, 1, 1));
+                    userRequest.setPrivacy(true);
 
-        Comune c1 = comuneRepo.findById(1L).get();
+                    Comune comune = comuneRepo.findById(1L).get();
+                    IndirizzoRequest indirizzo = new IndirizzoRequest();
+                    indirizzo.setVia(faker.address().streetName());
+                    indirizzo.setCivico(faker.address().buildingNumber());
+                    indirizzo.setComune_id(1L);
 
-        IndirizzoRequest indirizzo1 = new IndirizzoRequest();
-        indirizzo1.setVia("Via roma");
-        indirizzo1.setCivico("12");
-        indirizzo1.setComune_id(1L);
-
-        requestUser.setIndirizzo(indirizzo1);
-
-        if (normalUser.isEmpty()) {
-            appUserService.registerUser(
-                    Set.of(Role.ROLE_USER),
-                    requestUser
-
-            );
-        }
-
-        // Creazione dell'utente judge se non esiste
-        Optional<AppUser> judgeUser = appUserService.findByUsername("judge");
-        RegisterRequest requestJudge = new RegisterRequest();
-        requestJudge.setCognome("Judge");
-        requestJudge.setNome("Judge");
-        requestJudge.setUsername("judge");
-        requestJudge.setPassword("judgepwd");
-        requestJudge.setEmail("judge@example.com");
-        requestJudge.setTelefono("123455739");
-        requestJudge.setData_di_nascita(LocalDate.of(1970, 4, 21));
-        requestJudge.setPrivacy(true);
-
-
-        Comune c2 = comuneRepo.findById(1L).get();
-
-        IndirizzoRequest indirizzo2 = new IndirizzoRequest();
-
-        indirizzo2.setVia("Corso re umberto");
-        indirizzo2.setCivico("34");
-        indirizzo2.setComune_id(1L);
-
-
-        requestJudge.setIndirizzo(indirizzo2);
-
-        if (judgeUser.isEmpty()) {
-            appUserService.registerUser(
-                    Set.of(Role.ROLE_JUDGE),
-                    requestJudge
-
-            );
+                    userRequest.setIndirizzo(indirizzo);
+                    appUserService.registerUser(Set.of(Role.ROLE_USER), userRequest);
+                }
+            }
         }
     }
 }
