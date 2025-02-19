@@ -8,6 +8,7 @@ import java.time.LocalDate;
 
 @Data
 public class FotografiaResponse {
+    private Long id;
     private String titolo;
     private LocalDate data_inserimento;
     private AppUserRequest user;

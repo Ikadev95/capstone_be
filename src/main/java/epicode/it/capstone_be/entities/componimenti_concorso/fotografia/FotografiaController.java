@@ -49,9 +49,11 @@ public class FotografiaController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @DeleteMapping("{id}")
-    public ResponseEntity<String> deleteFotografia(@Validated @PathVariable Long id){
+    public ResponseEntity <Map<String, String>> deleteFotografia(@Validated @PathVariable Long id){
         fotografiaService.deleteFotografia(id);
-        return new ResponseEntity<>("Fotografia eliminata con successo", HttpStatus.OK);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Foto eliminata");
+        return ResponseEntity.ok(response);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
