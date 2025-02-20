@@ -1,5 +1,6 @@
 package epicode.it.capstone_be.auth;
 
+import epicode.it.capstone_be.auth.requests_responses.RegisterJudgeRequest;
 import epicode.it.capstone_be.auth.requests_responses.RegisterRequest;
 import epicode.it.capstone_be.entities.comune.Comune;
 import epicode.it.capstone_be.entities.comune.ComuneRepo;
@@ -17,7 +18,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Set;
 
-@Order(3)
+@Order(4)
 @Component
 public class AuthRunner implements ApplicationRunner {
 
@@ -56,11 +57,10 @@ public class AuthRunner implements ApplicationRunner {
                 adminRequest.setData_di_nascita(LocalDate.of(1995, 4, 11));
                 adminRequest.setPrivacy(true);
 
-                Comune comune = comuneRepo.findById(1L).get();
                 IndirizzoRequest indirizzo = new IndirizzoRequest();
                 indirizzo.setVia(faker.address().streetName());
                 indirizzo.setCivico(faker.address().buildingNumber());
-                indirizzo.setComune_id(1L);
+                indirizzo.setComune_id(2L);
 
                 adminRequest.setIndirizzo(indirizzo);
                 appUserService.registerUser(Set.of(Role.ROLE_ADMIN), adminRequest);
@@ -80,24 +80,14 @@ public class AuthRunner implements ApplicationRunner {
                 String giudiceUsername = "judge" + (i + 1);
                 Optional<AppUser> judgeUser = appUserService.findByUsername(giudiceUsername);
                 if (judgeUser.isEmpty()) {
-                    RegisterRequest judgeRequest = new RegisterRequest();
+                    RegisterJudgeRequest judgeRequest = new RegisterJudgeRequest();
                     judgeRequest.setCognome(faker.name().lastName());
                     judgeRequest.setNome(faker.name().firstName());
                     judgeRequest.setUsername(giudiceUsername);
                     judgeRequest.setPassword("judge" + (i + 1) + "pwd");
                     judgeRequest.setEmail(faker.internet().emailAddress());
-                    judgeRequest.setTelefono(faker.phoneNumber().phoneNumber());
-                    judgeRequest.setData_di_nascita(LocalDate.of(1980 + i, 1, 1));
-                    judgeRequest.setPrivacy(true);
 
-                    Comune comune = comuneRepo.findById(1L).get();
-                    IndirizzoRequest indirizzo = new IndirizzoRequest();
-                    indirizzo.setVia(faker.address().streetName());
-                    indirizzo.setCivico(faker.address().buildingNumber());
-                    indirizzo.setComune_id(1L);
-
-                    judgeRequest.setIndirizzo(indirizzo);
-                    appUserService.registerUser(Set.of(Role.ROLE_JUDGE), judgeRequest);
+                    appUserService.registerJudge(Set.of(Role.ROLE_JUDGE), judgeRequest);
                 }
             }
 
@@ -120,7 +110,7 @@ public class AuthRunner implements ApplicationRunner {
                     IndirizzoRequest indirizzo = new IndirizzoRequest();
                     indirizzo.setVia(faker.address().streetName());
                     indirizzo.setCivico(faker.address().buildingNumber());
-                    indirizzo.setComune_id(1L);
+                    indirizzo.setComune_id(3L);
 
                     userRequest.setIndirizzo(indirizzo);
                     appUserService.registerUser(Set.of(Role.ROLE_USER), userRequest);

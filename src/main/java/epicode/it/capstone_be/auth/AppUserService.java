@@ -72,6 +72,8 @@ public class AppUserService {
 
         Indirizzo indirizzo = new Indirizzo();
         BeanUtils.copyProperties(registerRequest.getIndirizzo(), indirizzo);
+        Comune comune = comuneRepo.findById(registerRequest.getIndirizzo().getComune_id()).get();
+        indirizzo.setComune(comune);
         indirizzoRepo.save(indirizzo);
 
         Utente utente = new Utente();
