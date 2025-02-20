@@ -19,5 +19,7 @@ public interface ComponimentoRepo extends JpaRepository<Componimento, Long> {
                 WHERE c.categoria.id = :categoriaId
             """)
     Page<Componimento> findByCategoriaId(@Param("categoriaId") Long categoriaId, Pageable pageable);
+
+
 }
 
