@@ -82,9 +82,17 @@ public class FotografiaService {
 
     @Transactional
     public void deleteFotografia(Long id) {
-        if (!fotografiaRepo.existsById(id)) {
-            throw new EntityNotFoundException("Fotografia non trovata");
+        Fotografia fotografia = fotografiaRepo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Fotografia non trovata"));
+
+        Path filePath = Paths.get(fotografia.getPercorsoFile());
+
+        try {
+            Files.deleteIfExists(filePath);
+        } catch (IOException e) {
+            throw new IllegalStateException("Errore durante l'eliminazione del file: " + e.getMessage());
         }
+
         try {
             fotografiaRepo.deleteById(id);
         } catch (DataIntegrityViolationException e) {
