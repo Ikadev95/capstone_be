@@ -15,7 +15,7 @@ public class PagamentoController {
     private final PagamentoService pagamentoService;
     private final PagamentoMapper mapper;
 
-    @GetMapping("/pagamenti/user")
+    @GetMapping("api/pagamenti/user")
     public ResponseEntity<List<PagamentoResponse>> getPagamenti(@AuthenticationPrincipal UserDetails userDetails){
         List<Pagamento> pagamenti = pagamentoService.getPagamentiByUsername(userDetails);
         return ResponseEntity.ok(mapper.mapPagamentoResponseList(pagamenti));

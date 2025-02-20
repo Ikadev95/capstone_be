@@ -10,7 +10,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/poesie")
@@ -42,9 +44,11 @@ public class PoesiaController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @DeleteMapping("{id}")
-    public ResponseEntity<String> deletePoesia(@Validated @PathVariable Long id){
+    public ResponseEntity<Map<String, String>> deletePoesia(@Validated @PathVariable Long id){
         poesiaService.deletePoesia(id);
-        return new ResponseEntity<>("Poesia eliminata con successo", HttpStatus.OK);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Poesia eliminata");
+        return ResponseEntity.ok(response);
     }
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/user")

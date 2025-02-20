@@ -6,8 +6,10 @@ import epicode.it.capstone_be.entities.categoria.Categoria;
 import epicode.it.capstone_be.entities.categoria.CategoriaRepo;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -78,11 +80,24 @@ public class FotografiaService {
         return fotografiaRepo.findById(id).orElse(null);
     }
 
+    @Transactional
     public void deleteFotografia(Long id) {
-        if (!fotografiaRepo.existsById(id)) {
-            throw new EntityNotFoundException("Fotografia non trovata");
+        Fotografia fotografia = fotografiaRepo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Fotografia non trovata"));
+
+        Path filePath = Paths.get(fotografia.getPercorsoFile());
+
+        try {
+            Files.deleteIfExists(filePath);
+        } catch (IOException e) {
+            throw new IllegalStateException("Errore durante l'eliminazione del file: " + e.getMessage());
         }
-        fotografiaRepo.deleteById(id);
+
+        try {
+            fotografiaRepo.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new IllegalStateException("La fotografia è ancora collegata ad altri elementi e non può essere eliminata.");
+        }
     }
 
     public List<Fotografia> getAllFotografie() {return fotografiaRepo.findAll();}
