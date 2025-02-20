@@ -2,7 +2,7 @@
 
 # 📡 Capstone Backend
 
-Questo repository contiene il backend dell’applicazione Capstone, un sistema per la gestione del concorso di fotografia e poesia organizzato dal Circolo Airali di San Secondo di Pinerolo. Il backend è sviluppato con Spring Boot, Hibernate e PostgreSQL e include funzionalità per autenticazione, gestione utenti, upload file, pagamenti con Stripe e generazione di report.
+Questa repository contiene il backend dell’applicazione Capstone, un sistema per la gestione del concorso di fotografia e poesia organizzato dal Circolo Airali di San Secondo di Pinerolo. Il backend è sviluppato con Spring Boot, Hibernate e PostgreSQL e include funzionalità per autenticazione, gestione utenti, upload file, pagamenti con Stripe e generazione di report.
 
 ##  🛠 Tecnologie utilizzate 
 	Java 21 
