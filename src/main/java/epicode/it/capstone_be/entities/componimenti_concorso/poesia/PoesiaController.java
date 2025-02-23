@@ -21,7 +21,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("api/poesie")
 @AllArgsConstructor
-//@PreAuthorize("isAuthenticated()")
+@PreAuthorize("isAuthenticated()")
 public class PoesiaController {
 
     private final PoesiaService poesiaService;

@@ -13,46 +13,47 @@ public interface PoesiaRepo extends JpaRepository<Poesia, Long> {
     List<Poesia> findByUsername(@Param("username") String username);
 
     @Query(value = """
-          SELECT 
-          c.titolo AS titolo,
-          p.testo AS testo,
-          COALESCE(v.voto, 0) AS voto,
-          u.nome AS nome,
-          u.cognome AS cognome,
-          cat.nome_categoria AS nomeCategoria
-          FROM 
-          poesia p
-          JOIN 
-          componimenti c ON p.id = c.id
-          JOIN 
-          categorie cat ON c.categoria_id = cat.id
-          JOIN 
-          users a ON c.user_id = a.id
-          JOIN 
-          utenti u ON a.id = u.user_id
-          LEFT JOIN 
-          voti v ON p.id = v.componimento_id
-          WHERE 
-          cat.nome_categoria = :nomeCategoria
-          ORDER BY
-          v.voto DESC NULLS LAST
-          """,
-          countQuery = """
-          SELECT COUNT(*)
-          FROM 
-          poesia p
-          JOIN 
-          componimenti c ON p.id = c.id
-          JOIN 
-          categorie cat ON c.categoria_id = cat.id
-          JOIN 
-          users a ON c.user_id = a.id
-          JOIN
-          utenti u ON a.id = u.user_id
-          LEFT JOIN 
-          voti v ON p.id = v.componimento_id
-          WHERE 
-          cat.nome_categoria = :nomeCategoria
-          """, nativeQuery = true)
+      SELECT 
+      c.titolo AS titolo,
+      p.testo AS testo,
+      COALESCE(AVG(v.voto), 0) AS mediaVoti,  
+      u.nome AS nome,
+      u.cognome AS cognome,
+      cat.nome_categoria AS nomeCategoria
+      FROM 
+      poesia p
+      JOIN 
+      componimenti c ON p.id = c.id
+      JOIN 
+      categorie cat ON c.categoria_id = cat.id
+      JOIN 
+      users a ON c.user_id = a.id
+      JOIN 
+      utenti u ON a.id = u.user_id
+      LEFT JOIN 
+      voti v ON p.id = v.componimento_id
+      WHERE 
+      cat.nome_categoria = :nomeCategoria
+      GROUP BY c.titolo, p.testo, u.nome, u.cognome, cat.nome_categoria
+      ORDER BY
+       mediaVoti DESC NULLS LAST
+      """,
+            countQuery = """
+      SELECT COUNT(*)
+      FROM 
+      poesia p
+      JOIN 
+      componimenti c ON p.id = c.id
+      JOIN 
+      categorie cat ON c.categoria_id = cat.id
+      JOIN 
+      users a ON c.user_id = a.id
+      JOIN
+      utenti u ON a.id = u.user_id
+      LEFT JOIN 
+      voti v ON p.id = v.componimento_id
+      WHERE 
+      cat.nome_categoria = :nomeCategoria
+      """, nativeQuery = true)
     Page<PoesiaProjection> findPoesieByCategoria(@Param("nomeCategoria") String nomeCategoria, Pageable pageable);
 }

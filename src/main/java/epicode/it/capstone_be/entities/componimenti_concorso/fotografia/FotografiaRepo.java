@@ -16,47 +16,49 @@ public interface FotografiaRepo extends JpaRepository<Fotografia, Long> {
     List<Fotografia> findByUsername(@Param("username") String username);
 
     @Query(value = """
-        SELECT 
-            c.titolo AS titolo,
-            f.percorso_file AS percorsoFile,
-            COALESCE(v.voto, 0) AS voto,
-            u.nome AS nome,
-            u.cognome AS cognome,
-            cat.nome_categoria AS nomeCategoria
-        FROM 
-            fotografia f
-        JOIN 
-            componimenti c ON f.id = c.id
-        JOIN 
-            categorie cat ON c.categoria_id = cat.id
-        JOIN 
-            users a ON c.user_id = a.id
-        JOIN 
-            utenti u ON a.id = u.user_id
-        LEFT JOIN 
-            voti v ON f.id = v.componimento_id
-        WHERE 
-            cat.nome_categoria = :nomeCategoria
-        ORDER BY 
-            v.voto DESC NULLS LAST
-        """,
+    SELECT 
+        c.titolo AS titolo,
+        f.percorso_file AS percorsoFile,
+        COALESCE(AVG(v.voto), 0) AS mediaVoti, 
+        u.nome AS nome,
+        u.cognome AS cognome,
+        cat.nome_categoria AS nomeCategoria
+    FROM 
+        fotografia f
+    JOIN 
+        componimenti c ON f.id = c.id
+    JOIN 
+        categorie cat ON c.categoria_id = cat.id
+    JOIN 
+        users a ON c.user_id = a.id
+    JOIN 
+        utenti u ON a.id = u.user_id
+    LEFT JOIN 
+        voti v ON f.id = v.componimento_id
+    WHERE 
+        cat.nome_categoria = :nomeCategoria
+    GROUP BY 
+        c.titolo, f.percorso_file, u.nome, u.cognome, cat.nome_categoria
+    ORDER BY 
+        mediaVoti DESC NULLS LAST
+    """,
             countQuery = """
-        SELECT COUNT(*)
-        FROM 
-            fotografia f
-        JOIN 
-            componimenti c ON f.id = c.id
-        JOIN 
-            categorie cat ON c.categoria_id = cat.id
-        JOIN 
-            users a ON c.user_id = a.id
-        JOIN 
-            utenti u ON a.id = u.user_id
-        LEFT JOIN 
-            voti v ON f.id = v.componimento_id
-        WHERE 
-            cat.nome_categoria = :nomeCategoria
-        """,
+    SELECT COUNT(*)
+    FROM 
+        fotografia f
+    JOIN 
+        componimenti c ON f.id = c.id
+    JOIN 
+        categorie cat ON c.categoria_id = cat.id
+    JOIN 
+        users a ON c.user_id = a.id
+    JOIN 
+        utenti u ON a.id = u.user_id
+    LEFT JOIN 
+        voti v ON f.id = v.componimento_id
+    WHERE 
+        cat.nome_categoria = :nomeCategoria
+    """,
             nativeQuery = true)
     Page<FotografiaProjection> findFotografieByCategoria(@Param("nomeCategoria") String nomeCategoria, Pageable pageable);
 
