@@ -2,6 +2,9 @@ package epicode.it.capstone_be.entities.componimenti_concorso.fotografia;
 
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +26,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("api/fotografie")
 @AllArgsConstructor
-@PreAuthorize("isAuthenticated()")
+//@PreAuthorize("isAuthenticated()")
 public class FotografiaController {
     private final FotografiaService fotografiaService;
     private final FotografiaMapper mapper;
@@ -116,4 +119,15 @@ public class FotografiaController {
         response.put("path", "uploads/fotografie/" + file.getOriginalFilename());
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/categoria")
+    public Page<FotografiaProjection> getFotografieByCategoria(
+            @RequestParam String nomeCategoria,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        return fotografiaService.getFotografieByCategoria(nomeCategoria, pageable);
+    }
+
     }

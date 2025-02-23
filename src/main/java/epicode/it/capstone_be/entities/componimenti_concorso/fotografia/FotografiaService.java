@@ -7,6 +7,8 @@ import epicode.it.capstone_be.entities.categoria.CategoriaRepo;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -104,5 +106,9 @@ public class FotografiaService {
 
     public List<Fotografia> getFotografieByUser( UserDetails userDetails) {
         return fotografiaRepo.findByUsername(userDetails.getUsername());
+    }
+
+    public Page<FotografiaProjection> getFotografieByCategoria(String nomeCategoria, Pageable pageable) {
+        return fotografiaRepo.findFotografieByCategoria(nomeCategoria, pageable);
     }
 }
