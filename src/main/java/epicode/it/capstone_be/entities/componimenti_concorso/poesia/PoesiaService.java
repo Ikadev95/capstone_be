@@ -6,9 +6,12 @@ import epicode.it.capstone_be.auth.requests_responses.AppUserRequest;
 import epicode.it.capstone_be.entities.categoria.Categoria;
 import epicode.it.capstone_be.entities.categoria.CategoriaRepo;
 import epicode.it.capstone_be.entities.categoria.Sezioni;
+import epicode.it.capstone_be.entities.componimenti_concorso.fotografia.FotografiaProjection;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.apache.commons.beanutils.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,5 +70,9 @@ public class PoesiaService {
     @Transactional
     public List<Poesia> getPoesieByUser(UserDetails userDetails) {
         return poesiaRepo.findByUsername(userDetails.getUsername());
+    }
+
+    public Page<PoesiaProjection> getFotografieByCategoria(String nomeCategoria, Pageable pageable) {
+        return poesiaRepo.findPoesieByCategoria(nomeCategoria, pageable);
     }
 }
