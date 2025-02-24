@@ -1,7 +1,11 @@
 package epicode.it.capstone_be.entities.componimenti_concorso.poesia;
 
+import epicode.it.capstone_be.entities.componimenti_concorso.fotografia.FotografiaProjection;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -55,5 +59,15 @@ public class PoesiaController {
     public ResponseEntity<List<PoesiaResponse>> getPoesieByUser(@AuthenticationPrincipal UserDetails userDetails){
         List<Poesia> poesie = poesiaService.getPoesieByUser(userDetails);
         return ResponseEntity.ok(mapper.mapPoesiaResponseList(poesie));
+    }
+
+    @GetMapping("/categoria")
+    public Page<PoesiaProjection> getFotografieByCategoria(
+            @RequestParam String nomeCategoria,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        return poesiaService.getFotografieByCategoria(nomeCategoria, pageable);
     }
 }
