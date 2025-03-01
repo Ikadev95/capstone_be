@@ -17,6 +17,7 @@ public interface ComponimentoRepo extends JpaRepository<Componimento, Long> {
                 LEFT JOIN Fotografia f ON c.id = f.id
                 LEFT JOIN Poesia p ON c.id = p.id
                 WHERE c.categoria.id = :categoriaId
+                AND EXTRACT(YEAR FROM c.data_inserimento) = EXTRACT(YEAR FROM CURRENT_DATE)
             """)
     Page<Componimento> findByCategoriaId(@Param("categoriaId") Long categoriaId, Pageable pageable);
 
