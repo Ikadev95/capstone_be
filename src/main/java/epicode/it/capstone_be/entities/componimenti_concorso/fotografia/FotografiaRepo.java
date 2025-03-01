@@ -12,7 +12,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface FotografiaRepo extends JpaRepository<Fotografia, Long> {
-    @Query("SELECT f FROM Fotografia f WHERE f.user.username = :username")
+    @Query(value = "SELECT DISTINCT f.* FROM Fotografia p JOIN componimenti c ON f.id = c.id WHERE c.user_id = (SELECT u.id FROM users u WHERE u.username = :username) AND EXTRACT(YEAR FROM c.data_inserimento) = EXTRACT(YEAR FROM CURRENT_DATE)", nativeQuery = true)
     List<Fotografia> findByUsername(@Param("username") String username);
 
     @Query(value = """
@@ -37,6 +37,7 @@ public interface FotografiaRepo extends JpaRepository<Fotografia, Long> {
         voti v ON f.id = v.componimento_id
     WHERE 
         cat.nome_categoria = :nomeCategoria
+        AND EXTRACT(YEAR FROM c.data_inserimento) = EXTRACT(YEAR FROM CURRENT_DATE)
     GROUP BY 
         c.titolo, f.percorso_file, u.nome, u.cognome, cat.nome_categoria
     ORDER BY 
@@ -58,6 +59,7 @@ public interface FotografiaRepo extends JpaRepository<Fotografia, Long> {
         voti v ON f.id = v.componimento_id
     WHERE 
         cat.nome_categoria = :nomeCategoria
+        AND EXTRACT(YEAR FROM c.data_inserimento) = EXTRACT(YEAR FROM CURRENT_DATE)
     """,
             nativeQuery = true)
     Page<FotografiaProjection> findFotografieByCategoria(@Param("nomeCategoria") String nomeCategoria, Pageable pageable);
