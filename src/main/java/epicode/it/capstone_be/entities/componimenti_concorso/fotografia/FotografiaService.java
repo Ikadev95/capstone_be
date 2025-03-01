@@ -88,6 +88,11 @@ public class FotografiaService {
                 .orElseThrow(() -> new EntityNotFoundException("Fotografia non trovata"));
 
         Path filePath = Paths.get(fotografia.getPercorsoFile());
+        try {
+            fotografiaRepo.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new IllegalStateException("La fotografia è ancora collegata ad altri elementi e non può essere eliminata.");
+        }
 
         try {
             Files.deleteIfExists(filePath);
@@ -95,11 +100,9 @@ public class FotografiaService {
             throw new IllegalStateException("Errore durante l'eliminazione del file: " + e.getMessage());
         }
 
-        try {
-            fotografiaRepo.deleteById(id);
-        } catch (DataIntegrityViolationException e) {
-            throw new IllegalStateException("La fotografia è ancora collegata ad altri elementi e non può essere eliminata.");
-        }
+
+
+
     }
 
     public List<Fotografia> getAllFotografie() {return fotografiaRepo.findAll();}

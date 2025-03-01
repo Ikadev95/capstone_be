@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface PoesiaRepo extends JpaRepository<Poesia, Long> {
-    @Query ("SELECT p FROM Poesia p WHERE p.user.username = :username")
+    @Query(value = "SELECT DISTINCT p.* FROM poesia p JOIN componimenti c ON p.id = c.poesia_id WHERE p.user_id = (SELECT u.id FROM users u WHERE u.username = :username) AND EXTRACT(YEAR FROM c.data_inserimento) = EXTRACT(YEAR FROM CURRENT_DATE)", nativeQuery = true)
     List<Poesia> findByUsername(@Param("username") String username);
 
     @Query(value = """
@@ -34,6 +34,7 @@ public interface PoesiaRepo extends JpaRepository<Poesia, Long> {
       voti v ON p.id = v.componimento_id
       WHERE 
       cat.nome_categoria = :nomeCategoria
+      AND EXTRACT(YEAR FROM c.data_inserimento) = EXTRACT(YEAR FROM CURRENT_DATE)
       GROUP BY c.titolo, p.testo, u.nome, u.cognome, cat.nome_categoria
       ORDER BY
        mediaVoti DESC NULLS LAST
@@ -54,6 +55,7 @@ public interface PoesiaRepo extends JpaRepository<Poesia, Long> {
       voti v ON p.id = v.componimento_id
       WHERE 
       cat.nome_categoria = :nomeCategoria
+      AND EXTRACT(YEAR FROM c.data_inserimento) = EXTRACT(YEAR FROM CURRENT_DATE)
       """, nativeQuery = true)
     Page<PoesiaProjection> findPoesieByCategoria(@Param("nomeCategoria") String nomeCategoria, Pageable pageable);
 }
