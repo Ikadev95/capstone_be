@@ -22,6 +22,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -159,5 +160,12 @@ public class AppUserService {
                 .orElseThrow(() -> new EntityNotFoundException("Utente non trovato con id: " + id));
         appUserRepository.delete(appUser);
         return appUser;
+    }
+
+    public void updatePassword(String email, String newPassword) {
+        AppUser user = appUserRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Utente non trovato"));
+        user.setPassword(passwordEncoder.encode(newPassword));
+        appUserRepository.save(user);
     }
 }
