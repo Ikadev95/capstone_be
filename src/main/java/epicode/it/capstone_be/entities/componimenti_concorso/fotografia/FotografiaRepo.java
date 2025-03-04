@@ -12,7 +12,8 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface FotografiaRepo extends JpaRepository<Fotografia, Long> {
-    @Query(value = "SELECT DISTINCT f.* FROM Fotografia f JOIN componimenti c ON f.id = c.id WHERE c.user_id = (SELECT u.id FROM users u WHERE u.username = :username) AND EXTRACT(YEAR FROM c.data_inserimento) = EXTRACT(YEAR FROM CURRENT_DATE)", nativeQuery = true)
+    @Query("SELECT f FROM Fotografia f WHERE f.user.username = :username " +
+            "AND FUNCTION('DATE_PART', 'YEAR', f.data_inserimento) = FUNCTION('DATE_PART', 'YEAR', CURRENT_DATE)")
     List<Fotografia> findByUsername(@Param("username") String username);
 
     @Query(value = """

@@ -100,9 +100,6 @@ public class FotografiaService {
             throw new IllegalStateException("Errore durante l'eliminazione del file: " + e.getMessage());
         }
 
-
-
-
     }
 
     public List<Fotografia> getAllFotografie() {return fotografiaRepo.findAll();}

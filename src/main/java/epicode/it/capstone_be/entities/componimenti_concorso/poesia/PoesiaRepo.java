@@ -9,7 +9,8 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface PoesiaRepo extends JpaRepository<Poesia, Long> {
-    @Query(value = "SELECT DISTINCT p.* FROM poesia p JOIN componimenti c ON p.id = c.id WHERE c.user_id = (SELECT u.id FROM users u WHERE u.username = :username) AND EXTRACT(YEAR FROM c.data_inserimento) = EXTRACT(YEAR FROM CURRENT_DATE)", nativeQuery = true)
+    @Query("SELECT p FROM Poesia p WHERE p.user.username = :username " +
+            "AND FUNCTION('DATE_PART', 'YEAR', p.data_inserimento) = FUNCTION('DATE_PART', 'YEAR', CURRENT_DATE)")
     List<Poesia> findByUsername(@Param("username") String username);
 
     @Query(value = """

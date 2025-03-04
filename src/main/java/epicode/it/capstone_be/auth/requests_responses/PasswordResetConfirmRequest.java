@@ -1,4 +1,4 @@
-package epicode.it.capstone_be.auth;
+package epicode.it.capstone_be.auth.requests_responses;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
