@@ -3,6 +3,7 @@ package epicode.it.capstone_be.auth;
 import epicode.it.capstone_be.auth.requests_responses.*;
 import epicode.it.capstone_be.emails.EmailRequest;
 import epicode.it.capstone_be.emails.EmailService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -56,9 +57,9 @@ public class AuthController {
     }
 
     @PostMapping("/reset-password")
-    public ResponseEntity<String> requestPasswordReset(@RequestBody @Valid PasswordResetRequest request) {
+    public ResponseEntity<Map<String, String>> requestPasswordReset(@RequestBody @Valid PasswordResetRequest request) {
         String token = tokenService.createPasswordResetToken(request.getEmail());
-        String resetLink = "http://localhost:4200/reset-password?token=" + token;
+        String resetLink = "http://localhost:4200/auth/reset?token=" + token + "&email=" + request.getEmail();
 
         EmailRequest emailRequest = new EmailRequest();
         emailRequest.setTo(request.getEmail());
@@ -66,9 +67,12 @@ public class AuthController {
         emailRequest.setBody("Clicca sul seguente link per reimpostare la tua password: " + resetLink);
 
         emailService.sendEmail(emailRequest);
-        return ResponseEntity.ok("Email di reset inviata con successo!");
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Email di reset inviata con successo!");
+        return ResponseEntity.ok(response);
     }
 
+    @Transactional
     @PostMapping("/reset-password/confirm")
     public ResponseEntity<String> resetPassword(@RequestBody @Valid PasswordResetConfirmRequest request) {
         if (!tokenService.isValidToken(request.getToken())) {

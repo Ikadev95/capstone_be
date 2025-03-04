@@ -162,6 +162,7 @@ public class AppUserService {
         return appUser;
     }
 
+    @Transactional
     public void updatePassword(String email, String newPassword) {
         AppUser user = appUserRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Utente non trovato"));
