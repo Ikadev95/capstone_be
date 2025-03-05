@@ -64,9 +64,14 @@ public class AuthController {
         EmailRequest emailRequest = new EmailRequest();
         emailRequest.setTo(request.getEmail());
         emailRequest.setSubject("Reset della tua password");
-        emailRequest.setBody("Clicca sul seguente link per reimpostare la tua password: " + resetLink);
+        emailRequest.setBody(
+                "<h2>Reset della tua password</h2>" +
+                        "<p>Clicca sul seguente link per reimpostare la tua password:</p>" +
+                        "<p><a href='" + resetLink + "' style='color: blue; font-weight: bold;'>Reimposta password</a></p>" +
+                        "<p>Se non hai richiesto il reset, ignora questa email.</p>"
+        );
 
-        emailService.sendEmail(emailRequest);
+        emailService.sendEmailHtml(emailRequest);
         Map<String, String> response = new HashMap<>();
         response.put("message", "Email di reset inviata con successo!");
         return ResponseEntity.ok(response);
