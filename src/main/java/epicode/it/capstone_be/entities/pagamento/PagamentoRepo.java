@@ -20,6 +20,7 @@ public interface PagamentoRepo extends JpaRepository<Pagamento,Long> {
                                                     @Param("startDate") LocalDate startDate,
                                                     @Param("endDate") LocalDate endDate);
 
+
     @Query("SELECT p FROM Pagamento p WHERE p.user = :user AND p.ragione_pagamento = :ragione AND p.data_pagamento BETWEEN :startDate AND :endDate")
     List<Pagamento> findPagamentiByUserAndRagioneAndDateRange(@Param("user") AppUser user,
                                                               @Param("ragione") RagionePagamentoEnum ragione,

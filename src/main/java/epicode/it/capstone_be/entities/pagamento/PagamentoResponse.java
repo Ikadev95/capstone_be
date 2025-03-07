@@ -1,10 +1,12 @@
 package epicode.it.capstone_be.entities.pagamento;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.time.LocalDate;
 @Data
 public class PagamentoResponse {
+
     private LocalDate data_pagamento;
     private String metodo_pagamento;
     private int importo;
