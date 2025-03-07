@@ -6,14 +6,12 @@ import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
 import epicode.it.capstone_be.auth.AppUser;
 import epicode.it.capstone_be.auth.AppUserRepository;
-import epicode.it.capstone_be.entities.pagamento.Pagamento;
-import epicode.it.capstone_be.entities.pagamento.PagamentoRepo;
-import epicode.it.capstone_be.entities.pagamento.RagionePagamentoEnum;
-import epicode.it.capstone_be.entities.pagamento.StatoPagamentoEnum;
+import epicode.it.capstone_be.entities.pagamento.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,10 +34,19 @@ public class StripeController {
     private PagamentoRepo pagamentoRepo;
     @Autowired
     private AppUserRepository appUserRepository;
+    @Autowired
+    private PagamentoService pagamentoService;
 
 
     @Value("${stripe.secret-key}") // Prendi la chiave segreta da application.properties
     private String stripeSecretKey;
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/pagamento-in-contanti")
+    public ResponseEntity<Map<String, String>> pagamentoInContanti(@RequestBody PaymentItemCash request) {
+
+        return pagamentoService.pagamentoInContanti(request);
+    }
 
     @PostMapping("/create-checkout-session")
     public ResponseEntity<Map<String, String>> createCheckoutSession(@RequestBody PaymentRequest request, @AuthenticationPrincipal UserDetails userDetails) {
