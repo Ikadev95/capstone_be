@@ -7,6 +7,7 @@ import epicode.it.capstone_be.entities.componimenti_concorso.componimento.Compon
 import epicode.it.capstone_be.entities.componimenti_concorso.componimento.ComponimentoRepo;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
@@ -15,9 +16,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @AllArgsConstructor
 public class VotoService {
-    private final VotoRepo votoRepo;
-    private final AppUserRepository appUserRepo;
-    private final ComponimentoRepo componimentoRepo;
+
+    @Autowired
+    private VotoRepo votoRepo;
+    @Autowired
+    private AppUserRepository appUserRepo;
+    @Autowired
+    private ComponimentoRepo componimentoRepo;
 
     public Voto saveVoto(VotoRequest voto, User userDetails) {
         if (!componimentoRepo.existsById(voto.getId_componimento())) {

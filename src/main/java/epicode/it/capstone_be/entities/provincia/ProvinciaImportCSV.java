@@ -3,6 +3,7 @@ package epicode.it.capstone_be.entities.provincia;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.FileReader;
@@ -12,7 +13,9 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class ProvinciaImportCSV {
-    private final ProvinciaRepo provinciaRepo;
+
+    @Autowired
+    private ProvinciaRepo provinciaRepo;
 
     public void importCsvProvincia(String filePath) {
         try(CSVReader csvReader = new CSVReader(new FileReader(filePath)) ){

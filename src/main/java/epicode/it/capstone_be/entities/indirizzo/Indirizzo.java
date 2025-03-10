@@ -18,6 +18,35 @@ public class Indirizzo {
     @JoinColumn(name = "comune_id")
     private Comune comune;
 
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
+    public String getVia() {
+        return via;
+    }
+
+    public void setVia(String via) {
+        this.via = via;
+    }
+
+    public String getCivico() {
+        return civico;
+    }
+
+    public void setCivico(String civico) {
+        this.civico = civico;
+    }
+
+    public Comune getComune() {
+        return comune;
+    }
+
+    public void setComune(Comune comune) {
+        this.comune = comune;
+    }
 }

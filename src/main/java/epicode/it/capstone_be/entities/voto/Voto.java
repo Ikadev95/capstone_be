@@ -27,5 +27,35 @@ public class Voto {
     private AppUser user;
 
 
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Float getVoto() {
+        return voto;
+    }
+
+    public void setVoto(Float voto) {
+        this.voto = voto;
+    }
+
+    public Componimento getComponimento() {
+        return componimento;
+    }
+
+    public void setComponimento(Componimento componimento) {
+        this.componimento = componimento;
+    }
+
+    public AppUser getUser() {
+        return user;
+    }
+
+    public void setUser(AppUser user) {
+        this.user = user;
+    }
 }

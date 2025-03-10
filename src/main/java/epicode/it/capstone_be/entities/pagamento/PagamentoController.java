@@ -1,6 +1,7 @@
 package epicode.it.capstone_be.entities.pagamento;
 
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,8 +16,10 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 public class PagamentoController {
-    private final PagamentoService pagamentoService;
-    private final PagamentoMapper mapper;
+    @Autowired
+    private PagamentoService pagamentoService;
+    @Autowired
+    private PagamentoMapper mapper;
 
     @GetMapping("api/pagamenti/user")
     public ResponseEntity<List<PagamentoResponse>> getPagamenti(@AuthenticationPrincipal UserDetails userDetails){

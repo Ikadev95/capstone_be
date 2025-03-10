@@ -1,6 +1,7 @@
 package epicode.it.capstone_be.entities.voto;
 
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,8 +15,11 @@ import org.springframework.web.bind.annotation.*;
 @PreAuthorize("hasRole('JUDGE')")
 @RequestMapping("api/voto")
 public class VotoController {
-    private final VotoService votoService;
-    private final VotoMapper mapper;
+
+    @Autowired
+    private VotoService votoService;
+    @Autowired
+    private VotoMapper mapper;
 
     @PostMapping("/create")
     public ResponseEntity<VotoResponse> createVoto(@RequestBody VotoRequest voto,@AuthenticationPrincipal User userDetails ){

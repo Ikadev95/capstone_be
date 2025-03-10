@@ -8,6 +8,7 @@ import epicode.it.capstone_be.stripe.PaymentRequest;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,8 +21,11 @@ import java.util.Map;
 @Service
 @AllArgsConstructor
 public class PagamentoService {
-    private final PagamentoRepo pagamentoRepo;
-    private final AppUserRepository appUserRepository;
+
+    @Autowired
+    private PagamentoRepo pagamentoRepo;
+    @Autowired
+    private AppUserRepository appUserRepository;
 
     public List<Pagamento> getPagamentiByUsername(UserDetails userDetails) {
         AppUser appUser = appUserRepository.findByUsername(userDetails.getUsername()).orElseThrow(() -> new EntityNotFoundException("Utente non trovato"));

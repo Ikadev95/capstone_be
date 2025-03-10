@@ -6,6 +6,7 @@ import epicode.it.capstone_be.emails.EmailService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,9 +21,12 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final AppUserService appUserService;
-    private final EmailService emailService;
-    private final PasswordResetTokenService tokenService;
+    @Autowired
+    private AppUserService appUserService;
+    @Autowired
+    private  EmailService emailService;
+    @Autowired
+    private  PasswordResetTokenService tokenService;
 
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> register(@RequestBody RegisterRequest registerRequest) {

@@ -5,6 +5,7 @@ import epicode.it.capstone_be.auth.AppUser;
 import epicode.it.capstone_be.entities.categoria.Sezioni;
 import lombok.AllArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +25,11 @@ import java.util.List;
 @PreAuthorize("isAuthenticated()")
 @RequestMapping("api/componimenti")
 public class ComponimentoController {
-    private final ComponimentoService componimentoService;
-    private final ComponimentoMapper mapper;
+
+    @Autowired
+    private ComponimentoService componimentoService;
+    @Autowired
+    private ComponimentoMapper mapper;
 
     @GetMapping
     public ResponseEntity<List<ComponimentoResponse>> getComponimenti(){

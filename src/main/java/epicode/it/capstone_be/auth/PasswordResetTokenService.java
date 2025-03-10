@@ -1,6 +1,7 @@
 package epicode.it.capstone_be.auth;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -10,7 +11,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PasswordResetTokenService {
 
-    private final PasswordResetTokenRepository tokenRepository;
+    @Autowired
+    private PasswordResetTokenRepository tokenRepository;
 
     public String createPasswordResetToken(String email) {
         String token = UUID.randomUUID().toString();

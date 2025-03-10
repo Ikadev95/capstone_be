@@ -8,6 +8,7 @@ import epicode.it.capstone_be.auth.requests_responses.RegisterRequest;
 import epicode.it.capstone_be.entities.pagamento.PagamentoRepo;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.User;
@@ -31,8 +32,11 @@ import java.util.UUID;
 @AllArgsConstructor
 @Validated
 public class UtenteService {
-    private final UtenteRepository utenteRepository;
-    private final PagamentoRepo pagamentoRepo;
+
+    @Autowired
+    private UtenteRepository utenteRepository;
+    @Autowired
+    private PagamentoRepo pagamentoRepo;
 
 
     //restituisco tutti gli utenti

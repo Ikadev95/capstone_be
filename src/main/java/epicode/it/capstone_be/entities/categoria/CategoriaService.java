@@ -7,6 +7,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,8 +16,10 @@ import java.util.List;
 @AllArgsConstructor
 public class CategoriaService {
 
-    private final CategoriaRepo categoriaRepo;
-    private final AppUserRepository appUserRepo;
+    @Autowired
+    private CategoriaRepo categoriaRepo;
+    @Autowired
+    private AppUserRepository appUserRepo;
 
     public List<Categoria> findAllCategories() {
         return categoriaRepo.findAll();

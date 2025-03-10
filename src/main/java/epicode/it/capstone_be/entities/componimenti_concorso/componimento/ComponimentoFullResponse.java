@@ -27,4 +27,52 @@ public class ComponimentoFullResponse {
         this.percorsoFile = percorsoFile;
         this.testo = testo;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitolo() {
+        return titolo;
+    }
+
+    public void setTitolo(String titolo) {
+        this.titolo = titolo;
+    }
+
+    public Long getCategoriaId() {
+        return categoriaId;
+    }
+
+    public void setCategoriaId(Long categoriaId) {
+        this.categoriaId = categoriaId;
+    }
+
+    public String getEstensioneFile() {
+        return estensioneFile;
+    }
+
+    public void setEstensioneFile(String estensioneFile) {
+        this.estensioneFile = estensioneFile;
+    }
+
+    public String getPercorsoFile() {
+        return percorsoFile;
+    }
+
+    public void setPercorsoFile(String percorsoFile) {
+        this.percorsoFile = percorsoFile;
+    }
+
+    public String getTesto() {
+        return testo;
+    }
+
+    public void setTesto(String testo) {
+        this.testo = testo;
+    }
 }

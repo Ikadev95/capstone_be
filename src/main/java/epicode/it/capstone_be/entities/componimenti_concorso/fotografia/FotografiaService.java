@@ -6,6 +6,7 @@ import epicode.it.capstone_be.entities.categoria.Categoria;
 import epicode.it.capstone_be.entities.categoria.CategoriaRepo;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,10 +27,16 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class FotografiaService {
-    private final FotografiaRepo fotografiaRepo;
+
+    @Autowired
+    private  FotografiaRepo fotografiaRepo;
+
     private final String UPLOAD_DIR = "uploads/fotografie/";
-    private final AppUserRepository appUserRepo;
-    private final CategoriaRepo categoriaRepo;
+
+    @Autowired
+    private  AppUserRepository appUserRepo;
+    @Autowired
+    private  CategoriaRepo categoriaRepo;
 
 
     public Fotografia salvaFotografia(MultipartFile file, FotografiaRequest fotografiaRequest) throws IOException {

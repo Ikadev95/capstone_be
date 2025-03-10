@@ -10,6 +10,7 @@ import epicode.it.capstone_be.entities.componimenti_concorso.fotografia.Fotograf
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.apache.commons.beanutils.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,9 +23,12 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class PoesiaService {
-    private final PoesiaRepo poesiaRepo;
-    private final AppUserRepository appUserRepo;
-    private final CategoriaRepo categoriaRepo;
+    @Autowired
+    private PoesiaRepo poesiaRepo;
+    @Autowired
+    private AppUserRepository appUserRepo;
+    @Autowired
+    private CategoriaRepo categoriaRepo;
 
     public Poesia getPoesia(Long id) {
         if (!poesiaRepo.existsById(id)) {

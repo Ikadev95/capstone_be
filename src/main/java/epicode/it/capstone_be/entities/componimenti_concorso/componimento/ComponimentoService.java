@@ -6,6 +6,7 @@ import epicode.it.capstone_be.entities.categoria.Sezioni;
 import epicode.it.capstone_be.entities.componimenti_concorso.fotografia.Fotografia;
 import epicode.it.capstone_be.entities.componimenti_concorso.poesia.Poesia;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,8 +19,11 @@ import java.util.List;
 @AllArgsConstructor
 public class ComponimentoService {
 
+    @Autowired
     private ComponimentoRepo componimentoRepo;
+    @Autowired
     private AppUserRepository appUserRepository;
+    @Autowired
     private ComponimentoResponseMapper componimentoResponseMapper;
 
     public List<Componimento> findAllComponimenti() {return componimentoRepo.findAll();}

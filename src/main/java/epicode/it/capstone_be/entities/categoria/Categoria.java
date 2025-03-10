@@ -25,4 +25,44 @@ public class Categoria {
 
     @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL)
     private List<AppUser> giudici;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNome_categoria() {
+        return nome_categoria;
+    }
+
+    public void setNome_categoria(String nome_categoria) {
+        this.nome_categoria = nome_categoria;
+    }
+
+    public Sezioni getSezione() {
+        return sezione;
+    }
+
+    public void setSezione(Sezioni sezione) {
+        this.sezione = sezione;
+    }
+
+    public List<Componimento> getComponimenti() {
+        return componimenti;
+    }
+
+    public void setComponimenti(List<Componimento> componimenti) {
+        this.componimenti = componimenti;
+    }
+
+    public List<AppUser> getGiudici() {
+        return giudici;
+    }
+
+    public void setGiudici(List<AppUser> giudici) {
+        this.giudici = giudici;
+    }
 }

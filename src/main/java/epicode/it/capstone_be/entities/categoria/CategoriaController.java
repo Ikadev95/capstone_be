@@ -3,6 +3,7 @@ package epicode.it.capstone_be.entities.categoria;
 import epicode.it.capstone_be.entities.utente.UtenteMapper;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,8 +20,10 @@ import java.util.Map;
 
 public class CategoriaController {
 
-    private final CategoriaService categoriaService;
-    private final CategoriaMapper mapper;
+    @Autowired
+    private CategoriaService categoriaService;
+    @Autowired
+    private CategoriaMapper mapper;
 
 
     @GetMapping("{id}")

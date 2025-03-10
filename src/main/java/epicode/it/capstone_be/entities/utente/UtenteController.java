@@ -3,6 +3,7 @@ package epicode.it.capstone_be.entities.utente;
 import epicode.it.capstone_be.auth.AppUserService;
 import lombok.AllArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -31,9 +32,12 @@ import java.util.Map;
 @PreAuthorize("isAuthenticated()")
 public class UtenteController {
 
-    private final UtenteService utenteService;
-    private final UtenteMapper mapper;
-    private final AppUserService appUserService;
+    @Autowired
+    private UtenteService utenteService;
+    @Autowired
+    private UtenteMapper mapper;
+    @Autowired
+    private AppUserService appUserService;
 
     @GetMapping
     public ResponseEntity<List<UtenteResponse>> getUtenti(){

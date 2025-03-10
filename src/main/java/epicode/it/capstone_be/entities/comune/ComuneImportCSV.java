@@ -5,6 +5,7 @@ import com.opencsv.exceptions.CsvException;
 import epicode.it.capstone_be.entities.provincia.Provincia;
 import epicode.it.capstone_be.entities.provincia.ProvinciaRepo;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.FileReader;
@@ -15,8 +16,10 @@ import java.util.List;
 @AllArgsConstructor
 public class ComuneImportCSV {
 
-    private final ComuneRepo comuneRepo;
-    private final ProvinciaRepo provinciaRepo;
+    @Autowired
+    private  ComuneRepo comuneRepo;
+    @Autowired
+    private  ProvinciaRepo provinciaRepo;
 
     public void importCsvComune(String filePath) {
         try (CSVReader csvReader = new CSVReader(new FileReader(filePath))) {

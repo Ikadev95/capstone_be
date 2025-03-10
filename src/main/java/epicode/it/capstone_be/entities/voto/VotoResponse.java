@@ -10,4 +10,20 @@ public class VotoResponse {
     @JsonProperty("voto")
     private Float voto;
     private AppUserRequest giudice;
+
+    public Float getVoto() {
+        return voto;
+    }
+
+    public void setVoto(Float voto) {
+        this.voto = voto;
+    }
+
+    public AppUserRequest getGiudice() {
+        return giudice;
+    }
+
+    public void setGiudice(AppUserRequest giudice) {
+        this.giudice = giudice;
+    }
 }

@@ -12,4 +12,36 @@ public class CategoriaResponse {
     private String nome_categoria;
     private Sezioni sezione;
     private List<AppUserRequest> giudici;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNome_categoria() {
+        return nome_categoria;
+    }
+
+    public void setNome_categoria(String nome_categoria) {
+        this.nome_categoria = nome_categoria;
+    }
+
+    public Sezioni getSezione() {
+        return sezione;
+    }
+
+    public void setSezione(Sezioni sezione) {
+        this.sezione = sezione;
+    }
+
+    public List<AppUserRequest> getGiudici() {
+        return giudici;
+    }
+
+    public void setGiudici(List<AppUserRequest> giudici) {
+        this.giudici = giudici;
+    }
 }

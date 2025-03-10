@@ -1,6 +1,7 @@
 package epicode.it.capstone_be.emails;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,7 +10,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/email")
 @RequiredArgsConstructor
 public class EmailController {
-    private final EmailService emailService;
+    @Autowired
+    private EmailService emailService;
 
     @PostMapping("/{isHtml}")
     public ResponseEntity<String> sendHtmlEmail(@RequestBody EmailRequest request, @RequestParam boolean isHtml) {

@@ -16,4 +16,52 @@ public class PoesiaResponse {
     private CategoriaRequest categoria;
     @Lob
     private String testo;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitolo() {
+        return titolo;
+    }
+
+    public void setTitolo(String titolo) {
+        this.titolo = titolo;
+    }
+
+    public LocalDate getData_inserimento() {
+        return data_inserimento;
+    }
+
+    public void setData_inserimento(LocalDate data_inserimento) {
+        this.data_inserimento = data_inserimento;
+    }
+
+    public AppUserRequest getUser() {
+        return user;
+    }
+
+    public void setUser(AppUserRequest user) {
+        this.user = user;
+    }
+
+    public CategoriaRequest getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(CategoriaRequest categoria) {
+        this.categoria = categoria;
+    }
+
+    public String getTesto() {
+        return testo;
+    }
+
+    public void setTesto(String testo) {
+        this.testo = testo;
+    }
 }

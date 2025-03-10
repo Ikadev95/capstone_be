@@ -1,6 +1,7 @@
 package epicode.it.capstone_be.entities.categoria;
 
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
@@ -11,7 +12,8 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class CategoriaRunner implements ApplicationRunner {
 
-    private final CategoriaRepo categoriaRepo;
+    @Autowired
+    private CategoriaRepo categoriaRepo;
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
