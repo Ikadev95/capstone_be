@@ -27,24 +27,47 @@ public class ConcorsoService {
 
     public Concorso updateDatiConcorso(MultipartFile file, String tema, LocalDate data_invio_opere, LocalDateTime data_premiazione, String anno, Float prezzo_singolo, Float prezzo_tre) throws IOException {
 
-        File directory = new File(UPLOAD_DIR);
-        if (!directory.exists()) {
-            directory.mkdirs();
+        if (file != null && !file.isEmpty()) {
+
+            File directory = new File(UPLOAD_DIR);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+
+            String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+            Path filePath = Paths.get(UPLOAD_DIR, fileName);
+
+            try {
+                Files.write(filePath, file.getBytes());
+            } catch (IOException e) {
+                throw new IOException("Errore durante il salvataggio del file: " + e.getMessage(), e);
+            }
+
+
+            Concorso concorso = concorsoRepo.findById(1L).orElse(null);
+            assert concorso != null;
+            concorso.setTema(tema);
+            concorso.setData_invio_opere(data_invio_opere);
+            concorso.setData_premiazione(data_premiazione);
+            concorso.setAnno(anno);
+            concorso.setPrezzo_singolo(prezzo_singolo);
+            concorso.setPrezzo_tre(prezzo_tre);
+            concorso.setId(1L);
+            concorso.setBando(filePath.toString());
+
+
+            return concorsoRepo.save(concorso);
+        } else {
+            Concorso concorso = concorsoRepo.findById(1L).orElse(null);
+            assert concorso != null;
+            concorso.setTema(tema);
+            concorso.setData_invio_opere(data_invio_opere);
+            concorso.setData_premiazione(data_premiazione);
+            concorso.setAnno(anno);
+            concorso.setPrezzo_singolo(prezzo_singolo);
+            concorso.setPrezzo_tre(prezzo_tre);
+            concorso.setId(1L);
+            return concorsoRepo.save(concorso);
         }
-
-        String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-        Path filePath = Paths.get(UPLOAD_DIR + fileName);
-        Files.write(filePath, file.getBytes());
-
-        Concorso concorso = new Concorso();
-        concorso.setTema(tema);
-        concorso.setData_invio_opere(data_invio_opere);
-        concorso.setData_premiazione(data_premiazione);
-        concorso.setAnno(anno);
-        concorso.setPrezzo_singolo(prezzo_singolo);
-        concorso.setPrezzo_tre(prezzo_tre);
-        concorso.setId(1L);
-        concorso.setBando(filePath.toString());
-        return concorsoRepo.save(concorso);
     }
 }
