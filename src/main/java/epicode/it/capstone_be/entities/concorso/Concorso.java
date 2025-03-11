@@ -18,6 +18,8 @@ public class Concorso {
     private LocalDateTime data_premiazione;
     private String anno;
     private String bando;
+    private Float prezzo_singolo;
+    private Float prezzo_tre;
 
     public Long getId() {
         return id;
@@ -65,5 +67,21 @@ public class Concorso {
 
     public void setBando(String bando) {
         this.bando = bando;
+    }
+
+    public Float getPrezzo_singolo() {
+        return prezzo_singolo;
+    }
+
+    public void setPrezzo_singolo(Float prezzo_singolo) {
+        this.prezzo_singolo = prezzo_singolo;
+    }
+
+    public Float getPrezzo_tre() {
+        return prezzo_tre;
+    }
+
+    public void setPrezzo_tre(Float prezzo_tre) {
+        this.prezzo_tre = prezzo_tre;
     }
 }

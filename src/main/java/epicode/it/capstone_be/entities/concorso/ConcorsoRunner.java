@@ -27,6 +27,8 @@ public class ConcorsoRunner implements ApplicationRunner {
             concorso.setData_invio_opere(LocalDate.now().plusMonths(3));
             concorso.setData_premiazione(concorso.getData_invio_opere().plusDays(10).atStartOfDay());
             concorso.setBando("Bando 1");
+            concorso.setPrezzo_singolo(10F);
+            concorso.setPrezzo_tre(20F);
             concorsoRepo.save(concorso);
         }
     }
