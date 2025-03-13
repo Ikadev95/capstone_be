@@ -3,6 +3,7 @@ package epicode.it.capstone_be.auth;
 
 import epicode.it.capstone_be.entities.categoria.Categoria;
 import epicode.it.capstone_be.entities.componimenti_concorso.componimento.Componimento;
+import epicode.it.capstone_be.entities.pagamento.Pagamento;
 import epicode.it.capstone_be.entities.utente.Utente;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -39,6 +40,9 @@ public class AppUser {
     @ManyToOne
     @JoinColumn(name = "categoria_id", referencedColumnName = "id")
     private Categoria categoria;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Pagamento> pagamenti;
 
     public Long getId() {
         return id;
