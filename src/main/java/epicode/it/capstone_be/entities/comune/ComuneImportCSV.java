@@ -8,8 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 
 @Service
@@ -21,8 +20,8 @@ public class ComuneImportCSV {
     @Autowired
     private  ProvinciaRepo provinciaRepo;
 
-    public void importCsvComune(String filePath) {
-        try (CSVReader csvReader = new CSVReader(new FileReader(filePath))) {
+    public void importCsvComune(InputStream inputStream) {
+        try (CSVReader csvReader = new CSVReader(new BufferedReader(new InputStreamReader(inputStream)))) {
             List<String[]> rows = csvReader.readAll();
 
             for (int i = 0; i < rows.size(); i++) {
@@ -34,7 +33,7 @@ public class ComuneImportCSV {
 
                 Comune comune = new Comune();
                 comune.setNome_comune(fields[0]);
-                comune.setCap((fields[3]));
+                comune.setCap(fields[3]);
                 comune.setProvincia(provincia);
                 comuneRepo.save(comune);
             }

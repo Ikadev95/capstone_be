@@ -6,8 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 
 @Service
@@ -17,16 +16,15 @@ public class ProvinciaImportCSV {
     @Autowired
     private ProvinciaRepo provinciaRepo;
 
-    public void importCsvProvincia(String filePath) {
-        try(CSVReader csvReader = new CSVReader(new FileReader(filePath)) ){
+    // Metodo aggiornato per ricevere InputStream
+    public void importCsvProvincia(InputStream inputStream) {
+        try (CSVReader csvReader = new CSVReader(new BufferedReader(new InputStreamReader(inputStream)))) {
             List<String[]> rows = csvReader.readAll();
 
             for (int i = 0; i < rows.size(); i++) {
-
                 String[] input = rows.get(i);
                 String field = input[0];
                 String[] fields = field.split(";");
-
 
                 Provincia provincia = new Provincia();
                 provincia.setNome_provincia(fields[2]);

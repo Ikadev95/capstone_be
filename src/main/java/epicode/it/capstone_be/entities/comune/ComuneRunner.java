@@ -7,6 +7,8 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import java.io.InputStream;
+
 @Component
 @Order(2)
 @AllArgsConstructor
@@ -19,9 +21,14 @@ public class ComuneRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        if(comuneRepo.count() == 0) {
-            String filePath = getClass().getClassLoader().getResource("comuni.csv").getPath();
-            comuneImportCSV.importCsvComune(filePath);
+        if (comuneRepo.count() == 0) {
+            // Legge comuni.csv come InputStream
+            InputStream is = getClass().getClassLoader().getResourceAsStream("comuni.csv");
+            if (is != null) {
+                comuneImportCSV.importCsvComune(is);
+            } else {
+                System.err.println("File comuni.csv non trovato nel classpath!");
+            }
         }
     }
 }

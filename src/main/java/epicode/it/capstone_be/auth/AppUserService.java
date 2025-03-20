@@ -3,6 +3,8 @@ package epicode.it.capstone_be.auth;
 import epicode.it.capstone_be.auth.jwt.JwtTokenUtil;
 import epicode.it.capstone_be.auth.requests_responses.RegisterJudgeRequest;
 import epicode.it.capstone_be.auth.requests_responses.RegisterRequest;
+import epicode.it.capstone_be.emails.EmailRequest;
+import epicode.it.capstone_be.emails.EmailService;
 import epicode.it.capstone_be.entities.comune.Comune;
 import epicode.it.capstone_be.entities.comune.ComuneRepo;
 import epicode.it.capstone_be.entities.indirizzo.Indirizzo;
@@ -56,6 +58,9 @@ public class AppUserService {
     @Autowired
     private ComuneRepo comuneRepo;
 
+    @Autowired
+    private EmailService emailService;
+
     @Transactional
     public AppUser registerUser(Set<Role> roles,@Valid RegisterRequest registerRequest) {
         if (appUserRepository.existsByUsername(registerRequest.getUsername())) {
@@ -73,7 +78,7 @@ public class AppUserService {
 
         Indirizzo indirizzo = new Indirizzo();
         BeanUtils.copyProperties(registerRequest.getIndirizzo(), indirizzo);
-        Comune comune = comuneRepo.findById(registerRequest.getIndirizzo().getComune_id()).get();
+        Comune comune = comuneRepo.findById(registerRequest.getIndirizzo().getComune_id()).orElseThrow(() -> new EntityNotFoundException("Comune non trovato"));
         indirizzo.setComune(comune);
         indirizzoRepo.save(indirizzo);
 
@@ -94,6 +99,18 @@ public class AppUserService {
         appUser = appUserRepository.save(appUser);
 
         utenteRepository.save(utente);
+
+        EmailRequest emailRequest = new EmailRequest();
+        emailRequest.setTo(registerRequest.getEmail());
+        emailRequest.setSubject("Registrazione Concorso Airali avvenuta con successo!!");
+        emailRequest.setBody(
+                "<h2>Grazie per esserti registrato al concorso Airali!</h2>" +
+                        "<p><b>Il tuo username è: </b> " + registerRequest.getUsername() + "</p>" +
+                        "<p><b>La tua password è: </b>" + registerRequest.getPassword() + "</p> <br>" +
+                        "<small>Circolo Airali di San Secondo di Pinerolo</small>"
+        );
+
+        emailService.sendEmailHtml(emailRequest);
 
         return appUser;
 
@@ -124,6 +141,17 @@ public class AppUserService {
         appUser = appUserRepository.save(appUser);
 
         utenteRepository.save(utente);
+        EmailRequest emailRequest = new EmailRequest();
+        emailRequest.setTo(registerRequest.getEmail());
+        emailRequest.setSubject("Registrazione Concorso Airali avvenuta con successo!!");
+        emailRequest.setBody(
+                "<h2>Grazie per esserti registrato al concorso Airali!</h2>" +
+                        "<p><b>Il tuo username è: </b> " + registerRequest.getUsername() + "</p>" +
+                        "<p><b>La tua password è: </b>" + registerRequest.getPassword() + "</p> <br>" +
+                        "<small>Circolo Airali di San Secondo di Pinerolo</small>"
+        );
+
+        emailService.sendEmailHtml(emailRequest);
 
         return appUser;
 
