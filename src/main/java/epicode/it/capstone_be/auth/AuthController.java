@@ -63,7 +63,7 @@ public class AuthController {
     @PostMapping("/reset-password")
     public ResponseEntity<Map<String, String>> requestPasswordReset(@RequestBody @Valid PasswordResetRequest request) {
         String token = tokenService.createPasswordResetToken(request.getEmail());
-        String resetLink = "http://localhost:4200/auth/reset?token=" + token + "&email=" + request.getEmail();
+        String resetLink = "https://concorsocircoloairali.it/auth/reset?token=" + token + "&email=" + request.getEmail();
 
         EmailRequest emailRequest = new EmailRequest();
         emailRequest.setTo(request.getEmail());

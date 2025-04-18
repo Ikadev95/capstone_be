@@ -50,7 +50,7 @@ public class SecurityConfig {
                 );
 
         // Aggiungi il filtro JWT
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+       http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

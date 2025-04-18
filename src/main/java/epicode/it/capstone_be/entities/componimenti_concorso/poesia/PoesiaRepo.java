@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PoesiaRepo extends JpaRepository<Poesia, Long> {
     @Query("SELECT p FROM Poesia p WHERE p.user.username = :username " +
@@ -15,48 +16,48 @@ public interface PoesiaRepo extends JpaRepository<Poesia, Long> {
 
     @Query(value = """
       SELECT 
-      c.titolo AS titolo,
-      p.testo AS testo,
-      COALESCE(AVG(v.voto), 0) AS mediaVoti,  
-      u.nome AS nome,
-      u.cognome AS cognome,
-      cat.nome_categoria AS nomeCategoria
+        c.titolo,
+        p.testo,
+        COALESCE(AVG(v.voto), 0) AS mediaVoti,
+        u.nome,
+        u.cognome, 
+        p.id    
       FROM 
-      poesia p
-      JOIN 
-      componimenti c ON p.id = c.id
-      JOIN 
-      categorie cat ON c.categoria_id = cat.id
-      JOIN 
-      users a ON c.user_id = a.id
-      JOIN 
-      utenti u ON a.id = u.user_id
-      LEFT JOIN 
-      voti v ON p.id = v.componimento_id
+        poesia p
+        JOIN componimenti c ON p.id = c.id
+        JOIN categorie cat ON c.categoria_id = cat.id
+        JOIN users a ON c.user_id = a.id
+        JOIN utenti u ON a.id = u.user_id
+        LEFT JOIN voti v ON p.id = v.componimento_id
       WHERE 
-      cat.nome_categoria = :nomeCategoria
-      AND EXTRACT(YEAR FROM c.data_inserimento) = EXTRACT(YEAR FROM CURRENT_DATE)
-      GROUP BY c.titolo, p.testo, u.nome, u.cognome, cat.nome_categoria
-      ORDER BY
-       mediaVoti DESC NULLS LAST
-      """,
-            countQuery = """
-      SELECT COUNT(*)
-      FROM 
-      poesia p
-      JOIN 
-      componimenti c ON p.id = c.id
-      JOIN 
-      categorie cat ON c.categoria_id = cat.id
-      JOIN 
-      users a ON c.user_id = a.id
-      JOIN
-      utenti u ON a.id = u.user_id
-      LEFT JOIN 
-      voti v ON p.id = v.componimento_id
-      WHERE 
-      cat.nome_categoria = :nomeCategoria
-      AND EXTRACT(YEAR FROM c.data_inserimento) = EXTRACT(YEAR FROM CURRENT_DATE)
+        cat.nome_categoria = :nomeCategoria
+        AND EXTRACT(YEAR FROM c.data_inserimento) = EXTRACT(YEAR FROM CURRENT_DATE)
+      GROUP BY 
+        c.titolo, p.testo, u.nome, u.cognome, p.id
+      ORDER BY 
+        mediaVoti DESC NULLS LAST
+      LIMIT :limit OFFSET :offset
       """, nativeQuery = true)
-    Page<PoesiaProjection> findPoesieByCategoria(@Param("nomeCategoria") String nomeCategoria, Pageable pageable);
+    List<Object[]> findPoesiePage(
+            @Param("nomeCategoria") String nomeCategoria,
+            @Param("limit") int limit,
+            @Param("offset") int offset
+    );
+
+    @Query(value = """
+      SELECT COUNT(*) 
+      FROM 
+        poesia p
+        JOIN componimenti c ON p.id = c.id
+        JOIN categorie cat ON c.categoria_id = cat.id
+        JOIN users a ON c.user_id = a.id
+        JOIN utenti u ON a.id = u.user_id
+        LEFT JOIN voti v ON p.id = v.componimento_id
+      WHERE 
+        cat.nome_categoria = :nomeCategoria
+        AND EXTRACT(YEAR FROM c.data_inserimento) = EXTRACT(YEAR FROM CURRENT_DATE)
+      """, nativeQuery = true)
+    long countPoesieByCategoria(@Param("nomeCategoria") String nomeCategoria);
+
+    public Poesia getPoesiaById(Long id);
 }

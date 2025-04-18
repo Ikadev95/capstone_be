@@ -28,7 +28,7 @@ public class Utente {
     @JoinColumn(name = "indirizzo_id", referencedColumnName = "id")
     private Indirizzo indirizzo;
 
-    @OneToOne
+    @OneToOne (cascade = CascadeType.ALL)
     @JoinColumn(name ="user_id", nullable = false, unique = true)
     private AppUser appUser;
 

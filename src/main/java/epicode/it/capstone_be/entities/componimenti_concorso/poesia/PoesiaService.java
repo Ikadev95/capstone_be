@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -76,7 +78,24 @@ public class PoesiaService {
         return poesiaRepo.findByUsername(userDetails.getUsername());
     }
 
-    public Page<PoesiaProjection> getFotografieByCategoria(String nomeCategoria, Pageable pageable) {
-        return poesiaRepo.findPoesieByCategoria(nomeCategoria, pageable);
+    public Page<PoesiaDTO> getPoesieByCategoria(String nomeCategoria, Pageable pageable) {
+        int limit = pageable.getPageSize();
+        int offset = (int) pageable.getOffset();
+
+        List<Object[]> risultati = poesiaRepo.findPoesiePage(nomeCategoria, limit, offset);
+        long totale = poesiaRepo.countPoesieByCategoria(nomeCategoria);
+
+        List<PoesiaDTO> poesie = risultati.stream()
+                .map(obj -> new PoesiaDTO(
+                        (String) obj[0], // titolo
+                        (String) obj[1], // testo
+                        ((Number) obj[2]).doubleValue(), // mediaVoti
+                        (String) obj[3], // nome
+                        (String) obj[4],
+                        (Long) obj[5]
+                ))
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(poesie, pageable, totale);
     }
 }

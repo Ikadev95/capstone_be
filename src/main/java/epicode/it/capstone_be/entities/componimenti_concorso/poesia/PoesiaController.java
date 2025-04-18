@@ -65,12 +65,12 @@ public class PoesiaController {
     }
 
     @GetMapping("/categoria")
-    public Page<PoesiaProjection> getFotografieByCategoria(
+    public Page<PoesiaDTO> getFotografieByCategoria(
             @RequestParam String nomeCategoria,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
-        return poesiaService.getFotografieByCategoria(nomeCategoria, pageable);
+        return poesiaService.getPoesieByCategoria(nomeCategoria, pageable);
     }
 }

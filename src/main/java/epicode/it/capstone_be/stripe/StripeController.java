@@ -121,8 +121,8 @@ public class StripeController {
         SessionCreateParams params = SessionCreateParams.builder()
                 .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
                 .setMode(SessionCreateParams.Mode.PAYMENT)
-                .setSuccessUrl("http://localhost:4200/successPagamento")  // Pagina di successo
-                .setCancelUrl("http://localhost:4200/pagamenti")  // Pagina di annullamento
+                .setSuccessUrl("https://concorsocircoloairali.it/successPagamento")  // Pagina di successo
+                .setCancelUrl("https://concorsocircoloairali.it/pagamenti")  // Pagina di annullamento
                 .addAllLineItem(items)
                 .build();
 
